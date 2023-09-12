@@ -93,6 +93,10 @@ df_fivebox <- df_fivebox %>%
     answerbox=="lhappro4_c3" ~ "four",
     answerbox=="lhappro5_c3" ~ "five"))
 
+
+STOPPED HERE WITH EDITING CODE. CODE BELOW IS COPY PASTE FROM THREEBOX THAT NEEDS TO BE ADAPTED TO FIVEBOX
+
+
 df_threebox_1 <- df_threebox %>% 
   filter(answerbox=="one") %>% 
   select(lfdn, lhap_ec, answerbox, text, lseh2_11:Iseh2_14) %>% 
