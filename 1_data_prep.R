@@ -1153,6 +1153,40 @@ df_fivebox$nonresponse[which(df_fivebox$text=="-99")] <- 1
 df_tenbox$nonresponse[which(df_tenbox$text=="-99")] <- 1
 df_threebox$nonresponse[which(df_threebox$text=="-99")] <- 1
 
+# check if there are multilabel answers in the nonmultilabel setting
+df_fivebox$multilabel <- rowSums(df_fivebox[, c("rest","nonresponse", "time_references", 
+                                          "life_event", "politics_security_society", "life_situation_living_conditions", 
+                                          "financial_situation", "job", "health", 
+                                          "social_network_surrounding")])
+table(df_fivebox$multilabel)
+df_fivebox <- df_fivebox %>% 
+  filter(!(multilabel!=1)) %>% 
+  select(-multilabel)
+
+# check if there are multilabel answers in the nonmultilabel setting
+df_threebox$multilabel <- rowSums(df_threebox[, c("rest","nonresponse", "time_references", 
+                                                "life_event", "politics_security_society", "life_situation_living_conditions", 
+                                                "financial_situation", "job", "health", 
+                                                "social_network_surrounding")])
+table(df_threebox$multilabel)
+df_threebox <- df_threebox %>% 
+  filter(!(multilabel!=1)) %>% 
+  select(-multilabel)
+
+# check if there are multilabel answers in the nonmultilabel setting
+df_tenbox$multilabel <- rowSums(df_tenbox[, c("rest","nonresponse", "time_references", 
+                                                "life_event", "politics_security_society", "life_situation_living_conditions", 
+                                                "financial_situation", "job", "health", 
+                                                "social_network_surrounding")])
+table(df_tenbox$multilabel)
+df_tenbox <- df_tenbox %>% 
+  filter(!(multilabel!=1)) %>% 
+  select(-multilabel)
+
+#### next, change ten five three from wide to long format for multiCLASS classification
+
+
+
 write_csv(df_fivebox, "~/bwSyncShare/Multilabel open q/Happy_fivebox.csv")
 write_csv(df_threebox, "~/bwSyncShare/Multilabel open q/Happy_threebox.csv")
 write_csv(df_tenbox, "~/bwSyncShare/Multilabel open q/Happy_tenbox.csv")
@@ -1160,8 +1194,9 @@ write_csv(df_onebox, "~/bwSyncShare/Multilabel open q/Happy_onebox.csv")
 
 
 
+
 ### estimate a multilabel model using onebox
 ### estimate a single label model using threebox, fivebox, tenbox
-
+###
 
 
