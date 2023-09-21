@@ -739,6 +739,13 @@ df_threebox_label3$answerbox <- df_threebox$answerbox
 ## there are only NAs in lab4
 df_threebox$new_label_4 <- NULL
 
+
+### for MultiCLASS Single Label
+df_threebox_single <- df_threebox %>% 
+  filter(is.na(new_label_2)) %>% 
+  select(-c(new_label_2, new_label_3))
+df_threebox_single$new_label_1[which(is.na(df_threebox_single$new_label_1))] <- "nonresponse"
+
 df_threebox2 <- bind_rows(df_threebox_label1,df_threebox_label2,df_threebox_label3)
 df_threebox2_A1 <- df_threebox2 %>% 
   filter(answerbox=="box one")
@@ -849,6 +856,12 @@ df_fivebox2_A4 <- df_fivebox2 %>%
   filter(answerbox=="box four")
 df_fivebox2_A5 <- df_fivebox2 %>% 
   filter(answerbox=="box five")
+
+### for MultiCLASS Single Label
+df_fivebox_single <- df_fivebox %>% 
+  filter(is.na(new_label_2)) %>% 
+  select(-c(new_label_2, new_label_3, new_label_4))
+df_fivebox_single$new_label_1[which(is.na(df_fivebox_single$new_label_1))] <- "nonresponse"
 
 df_fivebox2_A1 <- df_fivebox2_A1 %>%
   mutate_all(~na_if(., NA) %>% replace_na(0)) %>% 
@@ -1184,7 +1197,7 @@ df_tenbox <- df_tenbox %>%
   select(-multilabel)
 
 #### next, change ten five three from wide to long format for multiCLASS classification
-
+ten_long <- pivot_longer(df_tenbox, cols = -c(1:3), names_to = "label", values_to = "Value")
 
 
 write_csv(df_fivebox, "~/bwSyncShare/Multilabel open q/Happy_fivebox.csv")
