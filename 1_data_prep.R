@@ -81,7 +81,8 @@ df_threebox <- df_threebox %>%
   mutate(answerbox = case_when(
     answerbox=="lhappro1_c2" ~ "box one",
     answerbox=="lhappro2_c2" ~ "box two",
-    answerbox=="lhappro3_c2" ~ "box three"))
+    answerbox=="lhappro3_c2" ~ "box three")) %>% 
+  filter(text!="-99")
 
 df_threebox_1 <- df_threebox %>% 
   filter(answerbox=="box one") %>% 
@@ -119,7 +120,8 @@ df_fivebox <- df_fivebox %>%
     answerbox=="lhappro2_c3" ~ "box two",
     answerbox=="lhappro3_c3" ~ "box three",
     answerbox=="lhappro4_c3" ~ "box four",
-    answerbox=="lhappro5_c3" ~ "box five"))
+    answerbox=="lhappro5_c3" ~ "box five")) %>% 
+  filter(text!="-99")
 
 
 
@@ -183,7 +185,8 @@ df_tenbox <- df_tenbox %>%
     answerbox == "lhappro8_c4" ~ "box eight",
     answerbox == "lhappro9_c4" ~ "box nine",
     answerbox == "lhappro10_c4" ~ "box ten"
-  ))
+  )) %>% 
+  filter(text!="-99")
 
 
 df_tenbox_1 <- df_tenbox %>% 
@@ -621,7 +624,8 @@ df_tenbox <- df_tenbox %>%
   select(-c(label_3, lhap_ec, lhappro_nonresponse))
 
 
-
+df_fivebox <- df_fivebox %>% 
+  filter(!is.na(new_label_1))
 
 ####### 
 library(caret)
