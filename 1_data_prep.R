@@ -626,6 +626,11 @@ df_tenbox <- df_tenbox %>%
 
 df_fivebox <- df_fivebox %>% 
   filter(!is.na(new_label_1))
+df_threebox <- df_threebox %>% 
+  filter(!is.na(new_label_1))
+df_tenbox <- df_tenbox %>% 
+  filter(!is.na(new_label_1))
+
 
 ####### 
 library(caret)
@@ -746,7 +751,7 @@ df_threebox$new_label_4 <- NULL
 
 ### for MultiCLASS Single Label
 df_threebox_single <- df_threebox %>% 
-  filter(is.na(new_label_2)) %>% 
+#   filter(is.na(new_label_2)) %>% 
   select(-c(new_label_2, new_label_3))
 df_threebox_single$new_label_1[which(is.na(df_threebox_single$new_label_1))] <- "nonresponse"
 
@@ -863,7 +868,7 @@ df_fivebox2_A5 <- df_fivebox2 %>%
 
 ### for MultiCLASS Single Label
 df_fivebox_single <- df_fivebox %>% 
-  filter(is.na(new_label_2)) %>% 
+#   filter(is.na(new_label_2)) %>% 
   select(-c(new_label_2, new_label_3, new_label_4))
 df_fivebox_single$new_label_1[which(is.na(df_fivebox_single$new_label_1))] <- "nonresponse"
 
@@ -978,6 +983,12 @@ df_tenbox_label3$label <- "Three"
 df_tenbox_label3$lfdn <- df_tenbox$lfdn
 df_tenbox_label3$NOOO <- NULL
 df_tenbox_label3$answerbox <- df_tenbox$answerbox
+
+### for MultiCLASS Single Label
+df_tenbox_single <- df_tenbox %>% 
+  #   filter(is.na(new_label_2)) %>% 
+  select(-c(new_label_2, new_label_3))
+df_tenbox_single$new_label_1[which(is.na(df_tenbox_single$new_label_1))] <- "nonresponse"
 
 df_tenbox2 <- bind_rows(df_tenbox_label1,df_tenbox_label2,df_tenbox_label3)
 df_tenbox2_A1 <- df_tenbox2 %>% 
