@@ -2,19 +2,23 @@
 library(tidyverse)
 library(haven)
 
+# read data from Katharina
 df <- read_dta("~/bwSyncShare/Multilabel open q/Dataset_Happy.dta")
 
+# make some changes to the weird formats resulting from the dta import
 df$lhappro_character <- haven::as_factor(df$lhappro_character)
 df$lhap_ec <- haven::as_factor(df$lhap_ec)
 df$lhap <- haven::as_factor(df$lhap)
 df$lfdn <- as.numeric(df$lfdn)
 
 df$lhappro_nonresponse <- haven::as_factor(df$lhappro_nonresponse)
+
 # remove hard nonresponses
 df <- df %>% 
   filter(lhappro_nonresponse!="hard nonresponse")
 table(df$lhappro_nonresponse)
 
+# more changes to dta format
 df$lhappro_themes <- haven::as_factor(df$lhappro_themes)
 table(df$lhappro_themes)
 
@@ -44,6 +48,8 @@ table(df$lhappro_character)
 # 
 # df <- cbind(df, df_temp)
 # rm(df_temp)
+
+# split up data by experimental condition
 df_onebox <- df %>% 
   filter(lhap_ec=="one_box")
 df_threebox <- df %>% 
@@ -68,14 +74,17 @@ df_onebox$label_8 <- df_onebox$lseh1_8
 df_onebox$label_9 <- df_onebox$lseh1_9
 
 names(df_onebox)
+# drop unnecessary columns
 df_onebox <- df_onebox %>% 
   select(lfdn, lhap_ec, text, starts_with("label_"),lhappro_nonresponse)
 
 
 ## three boxes
+# drop unnecessary columns
 df_threebox <- df_threebox %>% 
   select(lfdn, lhap_ec, lhappro1_c2:lhappro3_c2, lseh2_11:lseh2_32,lhappro_nonresponse)
 
+# from wide to long format and indicate which box text comes from
 df_threebox <- gather(df_threebox, answerbox, text, lhappro1_c2:lhappro3_c2, factor_key=TRUE)
 df_threebox <- df_threebox %>% 
   mutate(answerbox = case_when(
@@ -109,7 +118,7 @@ df_threebox_3 <- df_threebox %>%
 df_threebox <- rbind(df_threebox_1,df_threebox_2,df_threebox_3)
 rm(df_threebox_1,df_threebox_2,df_threebox_3)
 
-
+### now same with five boxes
 df_fivebox <- df_fivebox %>% 
   select(lfdn, lhap_ec, lhappro1_c3:lhappro5_c3, lseh3_11:lseh3_52,lhappro_nonresponse)
 
@@ -167,7 +176,7 @@ rm(df_fivebox_1,df_fivebox_2,df_fivebox_3,df_fivebox_4,df_fivebox_5)
 
 
 
-## 10 boxes
+## and with 10 boxes
 
 df_tenbox <- df_tenbox %>% 
   select(lfdn, lhap_ec, lhappro1_c4:lhappro10_c4, lseh4_11:lseh4_102,lhappro_nonresponse)
@@ -265,6 +274,11 @@ df_tenbox <- rbind(df_tenbox_1, df_tenbox_2, df_tenbox_3, df_tenbox_4, df_tenbox
 rm(df_tenbox_1, df_tenbox_2, df_tenbox_3, df_tenbox_4, df_tenbox_5,
    df_tenbox_6, df_tenbox_7, df_tenbox_8, df_tenbox_9, df_tenbox_10)
 
+
+
+
+
+# update label categories /characters instead of numeric codes, repeat for each label
 table(df_onebox$label_1, df_onebox$lhappro_nonresponse)
 
 
@@ -423,7 +437,7 @@ df_onebox <- df_onebox %>%
 
 
 
-
+# same with three box format, five box, ten box
 df_threebox <- df_threebox %>%
   mutate(label_1 = as.character(label_1)) %>%
   mutate(new_label_1 = case_when(
@@ -1261,7 +1275,26 @@ df_concat_cats <- df_concat %>%
   social_network_surrounding = max(social_network_surrounding),
   nonresponse = max(nonresponse))
 
-df_concat <- merge(df_concat_cats, df_concat_text)
+df_concat2 <- merge(df_concat_cats, df_concat_text)
+
+df_lfdn_unique <- df_concat %>% 
+  group_by(lfdn) %>% 
+  summarise(exp_cond = max(exp_cond))
+df_concat2$exp_cond <- df_lfdn_unique$exp_cond
+
+df_concatsss <- rowSums(df_concat2[,c("nonresponse",
+                               "rest",
+                               "time_references",
+                               "life_event",
+                               "politics_security_society",
+                               "life_situation_living_conditions",
+                               "financial_situation",
+                               "job",
+                               "health",
+                               "social_network_surrounding")])
+
+min(df_concatsss)
+
 write_csv(df_fivebox, "~/bwSyncShare/Multilabel open q/Happy_fivebox.csv")
 write_csv(df_threebox, "~/bwSyncShare/Multilabel open q/Happy_threebox.csv")
 write_csv(df_tenbox, "~/bwSyncShare/Multilabel open q/Happy_tenbox.csv")
@@ -1272,21 +1305,10 @@ write_csv(df_threebox_single, "~/bwSyncShare/Multilabel open q/Happy_threebox_si
 write_csv(df_tenbox_single, "~/bwSyncShare/Multilabel open q/Happy_tenbox_single.csv")
 
 write_csv(df_single, "~/bwSyncShare/Multilabel open q/all_single.csv")
-write_csv(df_concat, "~/bwSyncShare/Multilabel open q/all_concat.csv")
+write_csv(df_concat2, "~/bwSyncShare/Multilabel open q/all_concat.csv")
 
 
-df <- data.frame(
-  ID = c(1, 1, 2, 2),
-  Text = c("A", "B", "C", "D")
-)
 
-# Group by the ID variable and concatenate text within each group
-result <- df %>%
-  group_by(ID) %>%
-  summarize(Concatenated_Text = paste(Text, collapse = ", "))
-
-# Print the result
-print(result)
 
 
 ### estimate a multilabel model using onebox
