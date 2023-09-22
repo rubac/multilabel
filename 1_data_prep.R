@@ -1276,7 +1276,8 @@ df_concat_cats <- df_concat %>%
   nonresponse = max(nonresponse))
 
 df_concat2 <- merge(df_concat_cats, df_concat_text)
-
+df_concat2 <- df_concat2 %>% 
+  rename(text = concat_text)
 df_lfdn_unique <- df_concat %>% 
   group_by(lfdn) %>% 
   summarise(exp_cond = max(exp_cond))
