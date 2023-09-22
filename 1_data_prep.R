@@ -632,6 +632,22 @@ df_tenbox <- df_tenbox %>%
   filter(!is.na(new_label_1))
 
 
+##### here we drop cases that have multiple labels
+df_fivebox <- df_fivebox %>% 
+  filter(is.na(new_label_2)) %>%
+  filter(is.na(new_label_3))
+
+df_threebox <- df_threebox %>% 
+filter(is.na(new_label_2)) %>%
+  filter(is.na(new_label_3))
+
+
+df_tenbox <- df_tenbox %>% 
+filter(is.na(new_label_2)) %>%
+  filter(is.na(new_label_3))
+
+
+
 ####### 
 library(caret)
 # one-hot encoding to put labels into right format for python
@@ -728,26 +744,26 @@ df_threebox_label1$label <- "One"
 df_threebox_label1$lfdn <- df_threebox$lfdn
 df_threebox_label1$answerbox <- df_threebox$answerbox
 
-df_threebox_label2 <- predict(dummyVars(~ new_label_2, df_threebox), newdata = df_threebox)
-colnames(df_threebox_label2) <- gsub("new_label_2", "", colnames(df_threebox_label2))
-df_threebox_label2 <- as.data.frame(df_threebox_label2)
-df_threebox_label2$label <- "Two"
-df_threebox_label2$lfdn <- df_threebox$lfdn
-df_threebox_label2$answerbox <- df_threebox$answerbox
-
-df_threebox$new_label_3[which(is.na(df_threebox$new_label_3))] <- "NOOO"
-df_threebox_label3 <- predict(dummyVars(~ new_label_3, df_threebox), newdata = df_threebox)
-colnames(df_threebox_label3) <- gsub("new_label_3", "", colnames(df_threebox_label3))
-df_threebox_label3 <- as.data.frame(df_threebox_label3)
-df_threebox_label3$label <- "Three"
-df_threebox_label3$lfdn <- df_threebox$lfdn
-df_threebox_label3$NOOO <- NULL
-df_threebox_label3$answerbox <- df_threebox$answerbox
-
-
-## there are only NAs in lab4
-df_threebox$new_label_4 <- NULL
-
+# df_threebox_label2 <- predict(dummyVars(~ new_label_2, df_threebox), newdata = df_threebox)
+# colnames(df_threebox_label2) <- gsub("new_label_2", "", colnames(df_threebox_label2))
+# df_threebox_label2 <- as.data.frame(df_threebox_label2)
+# df_threebox_label2$label <- "Two"
+# df_threebox_label2$lfdn <- df_threebox$lfdn
+# df_threebox_label2$answerbox <- df_threebox$answerbox
+# 
+# df_threebox$new_label_3[which(is.na(df_threebox$new_label_3))] <- "NOOO"
+# df_threebox_label3 <- predict(dummyVars(~ new_label_3, df_threebox), newdata = df_threebox)
+# colnames(df_threebox_label3) <- gsub("new_label_3", "", colnames(df_threebox_label3))
+# df_threebox_label3 <- as.data.frame(df_threebox_label3)
+# df_threebox_label3$label <- "Three"
+# df_threebox_label3$lfdn <- df_threebox$lfdn
+# df_threebox_label3$NOOO <- NULL
+# df_threebox_label3$answerbox <- df_threebox$answerbox
+# 
+# 
+# ## there are only NAs in lab4
+# df_threebox$new_label_4 <- NULL
+# 
 
 ### for MultiCLASS Single Label
 df_threebox_single <- df_threebox %>% 
@@ -755,7 +771,10 @@ df_threebox_single <- df_threebox %>%
   select(-c(new_label_2, new_label_3))
 df_threebox_single$new_label_1[which(is.na(df_threebox_single$new_label_1))] <- "nonresponse"
 
-df_threebox2 <- bind_rows(df_threebox_label1,df_threebox_label2,df_threebox_label3)
+# df_threebox2 <- bind_rows(df_threebox_label1,df_threebox_label2,df_threebox_label3)
+
+df_threebox2 <- df_threebox_label1
+
 df_threebox2_A1 <- df_threebox2 %>% 
   filter(answerbox=="box one")
 df_threebox2_A2 <- df_threebox2 %>% 
@@ -813,7 +832,7 @@ df_threebox2 <- rbind(df_threebox2_A1, df_threebox2_A2, df_threebox2_A3)
 df_threebox <- merge(df_threebox, df_threebox2)
 df_threebox <- df_threebox %>% 
   select(-c(starts_with("new_lab")))
-rm(df_threebox2, df_threebox_label1, df_threebox_label2, df_threebox_label3,
+rm(df_threebox2, df_threebox_label1,
    df_threebox2_A1, df_threebox2_A2, df_threebox2_A3)
 
 
@@ -828,33 +847,36 @@ df_fivebox_label1$label <- "One"
 df_fivebox_label1$lfdn <- df_fivebox$lfdn
 df_fivebox_label1$answerbox <- df_fivebox$answerbox
 
-df_fivebox_label2 <- predict(dummyVars(~ new_label_2, df_fivebox), newdata = df_fivebox)
-colnames(df_fivebox_label2) <- gsub("new_label_2", "", colnames(df_fivebox_label2))
-df_fivebox_label2 <- as.data.frame(df_fivebox_label2)
-df_fivebox_label2$label <- "Two"
-df_fivebox_label2$lfdn <- df_fivebox$lfdn
-df_fivebox_label2$answerbox <- df_fivebox$answerbox
+# df_fivebox_label2 <- predict(dummyVars(~ new_label_2, df_fivebox), newdata = df_fivebox)
+# colnames(df_fivebox_label2) <- gsub("new_label_2", "", colnames(df_fivebox_label2))
+# df_fivebox_label2 <- as.data.frame(df_fivebox_label2)
+# df_fivebox_label2$label <- "Two"
+# df_fivebox_label2$lfdn <- df_fivebox$lfdn
+# df_fivebox_label2$answerbox <- df_fivebox$answerbox
+# 
+# # df_fivebox$new_label_3[which(is.na(df_fivebox$new_label_3))] <- "NOOO"
+# df_fivebox_label3 <- predict(dummyVars(~ new_label_3, df_fivebox), newdata = df_fivebox)
+# colnames(df_fivebox_label3) <- gsub("new_label_3", "", colnames(df_fivebox_label3))
+# df_fivebox_label3 <- as.data.frame(df_fivebox_label3)
+# df_fivebox_label3$label <- "Three"
+# df_fivebox_label3$lfdn <- df_fivebox$lfdn
+# # df_fivebox_label3$NOOO <- NULL
+# df_fivebox_label3$answerbox <- df_fivebox$answerbox
+# 
+# 
+# df_fivebox$new_label_4[which(is.na(df_fivebox$new_label_4))] <- "NOOO"
+# df_fivebox_label4 <- predict(dummyVars(~ new_label_4, df_fivebox), newdata = df_fivebox)
+# colnames(df_fivebox_label4) <- gsub("new_label_4", "", colnames(df_fivebox_label4))
+# df_fivebox_label4 <- as.data.frame(df_fivebox_label4)
+# df_fivebox_label4$label <- "Three"
+# df_fivebox_label4$lfdn <- df_fivebox$lfdn
+# df_fivebox_label4$NOOO <- NULL
+# df_fivebox_label4$answerbox <- df_fivebox$answerbox
 
-# df_fivebox$new_label_3[which(is.na(df_fivebox$new_label_3))] <- "NOOO"
-df_fivebox_label3 <- predict(dummyVars(~ new_label_3, df_fivebox), newdata = df_fivebox)
-colnames(df_fivebox_label3) <- gsub("new_label_3", "", colnames(df_fivebox_label3))
-df_fivebox_label3 <- as.data.frame(df_fivebox_label3)
-df_fivebox_label3$label <- "Three"
-df_fivebox_label3$lfdn <- df_fivebox$lfdn
-# df_fivebox_label3$NOOO <- NULL
-df_fivebox_label3$answerbox <- df_fivebox$answerbox
+# df_fivebox2 <- bind_rows(df_fivebox_label1,df_fivebox_label2,df_fivebox_label3,df_fivebox_label4)
+df_fivebox2 <- df_fivebox_label1
 
 
-df_fivebox$new_label_4[which(is.na(df_fivebox$new_label_4))] <- "NOOO"
-df_fivebox_label4 <- predict(dummyVars(~ new_label_4, df_fivebox), newdata = df_fivebox)
-colnames(df_fivebox_label4) <- gsub("new_label_4", "", colnames(df_fivebox_label4))
-df_fivebox_label4 <- as.data.frame(df_fivebox_label4)
-df_fivebox_label4$label <- "Three"
-df_fivebox_label4$lfdn <- df_fivebox$lfdn
-df_fivebox_label4$NOOO <- NULL
-df_fivebox_label4$answerbox <- df_fivebox$answerbox
-
-df_fivebox2 <- bind_rows(df_fivebox_label1,df_fivebox_label2,df_fivebox_label3,df_fivebox_label4)
 df_fivebox2_A1 <- df_fivebox2 %>% 
   filter(answerbox=="box one")
 df_fivebox2_A2 <- df_fivebox2 %>% 
@@ -952,7 +974,7 @@ df_fivebox2 <- rbind(df_fivebox2_A1, df_fivebox2_A2, df_fivebox2_A3, df_fivebox2
 df_fivebox <- merge(df_fivebox, df_fivebox2)
 df_fivebox <- df_fivebox %>% 
   select(-c(starts_with("new_lab")))
-rm(df_fivebox2, df_fivebox_label1, df_fivebox_label2, df_fivebox_label3,df_fivebox_label4,
+rm(df_fivebox2, df_fivebox_label1,
    df_fivebox2_A1, df_fivebox2_A2, df_fivebox2_A3, df_fivebox2_A4, df_fivebox2_A5)
 
 
@@ -968,21 +990,21 @@ df_tenbox_label1$label <- "One"
 df_tenbox_label1$lfdn <- df_tenbox$lfdn
 df_tenbox_label1$answerbox <- df_tenbox$answerbox
 
-df_tenbox_label2 <- predict(dummyVars(~ new_label_2, df_tenbox), newdata = df_tenbox)
-colnames(df_tenbox_label2) <- gsub("new_label_2", "", colnames(df_tenbox_label2))
-df_tenbox_label2 <- as.data.frame(df_tenbox_label2)
-df_tenbox_label2$label <- "Two"
-df_tenbox_label2$lfdn <- df_tenbox$lfdn
-df_tenbox_label2$answerbox <- df_tenbox$answerbox
-
-df_tenbox$new_label_3[which(is.na(df_tenbox$new_label_3))] <- "NOOO"
-df_tenbox_label3 <- predict(dummyVars(~ new_label_3, df_tenbox), newdata = df_tenbox)
-colnames(df_tenbox_label3) <- gsub("new_label_3", "", colnames(df_tenbox_label3))
-df_tenbox_label3 <- as.data.frame(df_tenbox_label3)
-df_tenbox_label3$label <- "Three"
-df_tenbox_label3$lfdn <- df_tenbox$lfdn
-df_tenbox_label3$NOOO <- NULL
-df_tenbox_label3$answerbox <- df_tenbox$answerbox
+# df_tenbox_label2 <- predict(dummyVars(~ new_label_2, df_tenbox), newdata = df_tenbox)
+# colnames(df_tenbox_label2) <- gsub("new_label_2", "", colnames(df_tenbox_label2))
+# df_tenbox_label2 <- as.data.frame(df_tenbox_label2)
+# df_tenbox_label2$label <- "Two"
+# df_tenbox_label2$lfdn <- df_tenbox$lfdn
+# df_tenbox_label2$answerbox <- df_tenbox$answerbox
+# 
+# df_tenbox$new_label_3[which(is.na(df_tenbox$new_label_3))] <- "NOOO"
+# df_tenbox_label3 <- predict(dummyVars(~ new_label_3, df_tenbox), newdata = df_tenbox)
+# colnames(df_tenbox_label3) <- gsub("new_label_3", "", colnames(df_tenbox_label3))
+# df_tenbox_label3 <- as.data.frame(df_tenbox_label3)
+# df_tenbox_label3$label <- "Three"
+# df_tenbox_label3$lfdn <- df_tenbox$lfdn
+# df_tenbox_label3$NOOO <- NULL
+# df_tenbox_label3$answerbox <- df_tenbox$answerbox
 
 ### for MultiCLASS Single Label
 df_tenbox_single <- df_tenbox %>% 
@@ -990,7 +1012,8 @@ df_tenbox_single <- df_tenbox %>%
   select(-c(new_label_2, new_label_3))
 df_tenbox_single$new_label_1[which(is.na(df_tenbox_single$new_label_1))] <- "nonresponse"
 
-df_tenbox2 <- bind_rows(df_tenbox_label1,df_tenbox_label2,df_tenbox_label3)
+df_tenbox2 <- df_tenbox_label1
+# df_tenbox2 <- bind_rows(df_tenbox_label1,df_tenbox_label2,df_tenbox_label3)
 df_tenbox2_A1 <- df_tenbox2 %>% 
   filter(answerbox=="box one")
 df_tenbox2_A2 <- df_tenbox2 %>% 
@@ -1172,24 +1195,21 @@ rm(df_tenbox2, df_tenbox_label1, df_tenbox_label2, df_tenbox_label3,
    df_tenbox2_A1, df_tenbox2_A2, df_tenbox2_A3, df_tenbox2_A4, df_tenbox2_A5
    , df_tenbox2_A6, df_tenbox2_A7, df_tenbox2_A8, df_tenbox2_A9, df_tenbox2_A10)
 
-
-## code text==-99 as nonresponse==1 
-table(df_fivebox$text[which(df_fivebox$text=="-99")], df_fivebox$nonresponse[which(df_fivebox$text=="-99")])
-table(df_tenbox$text[which(df_tenbox$text=="-99")], df_tenbox$nonresponse[which(df_tenbox$text=="-99")])
-table(df_threebox$text[which(df_threebox$text=="-99")], df_threebox$nonresponse[which(df_threebox$text=="-99")])
-df_fivebox$nonresponse[which(df_fivebox$text=="-99")] <- 1
-df_tenbox$nonresponse[which(df_tenbox$text=="-99")] <- 1
-df_threebox$nonresponse[which(df_threebox$text=="-99")] <- 1
-
 # check if there are multilabel answers in the nonmultilabel setting
 df_fivebox$multilabel <- rowSums(df_fivebox[, c("rest","nonresponse", "time_references", 
                                           "life_event", "politics_security_society", "life_situation_living_conditions", 
                                           "financial_situation", "job", "health", 
                                           "social_network_surrounding")])
 table(df_fivebox$multilabel)
+
+df_multi_five <- df_fivebox$text[which(df_fivebox$multilabel>1)]
+
 df_fivebox <- df_fivebox %>% 
   filter(!(multilabel!=1)) %>% 
   select(-multilabel)
+
+`%nin%` = Negate(`%in%`)
+df_fivebox_single <- df_fivebox_single[df_fivebox_single$text %nin% df_multi_five,]
 
 # check if there are multilabel answers in the nonmultilabel setting
 df_threebox$multilabel <- rowSums(df_threebox[, c("rest","nonresponse", "time_references", 
@@ -1211,16 +1231,62 @@ df_tenbox <- df_tenbox %>%
   filter(!(multilabel!=1)) %>% 
   select(-multilabel)
 
-#### next, change ten five three from wide to long format for multiCLASS classification
-ten_long <- pivot_longer(df_tenbox, cols = -c(1:3), names_to = "label", values_to = "Value")
+df_fivebox$exp_cond <- "five box"
+df_threebox$exp_cond <- "three box"
+df_tenbox$exp_cond <- "ten box"
 
+df_fivebox_single$exp_cond <- "five box"
+df_threebox_single$exp_cond <- "three box"
+df_tenbox_single$exp_cond <- "ten box"
 
+df_threebox_single <- df_threebox_single %>% 
+  select(-new_label_4)
+
+df_single <- rbind(df_tenbox_single, df_fivebox_single, df_threebox_single)
+df_concat <- rbind(df_tenbox, df_fivebox, df_threebox)
+df_concat_text <- df_concat %>% 
+  group_by(lfdn) %>% 
+  summarize(concat_text = paste(text, collapse = ", "))
+
+df_concat_cats <- df_concat %>% 
+  group_by(lfdn) %>% 
+  summarize(rest = max(rest),
+  time_references = max(time_references),
+  life_event = max(life_event),
+  politics_security_society = max(politics_security_society),
+  life_situation_living_conditions = max(life_situation_living_conditions),
+  financial_situation = max(financial_situation),
+  job = max(job),
+  health = max(health),
+  social_network_surrounding = max(social_network_surrounding),
+  nonresponse = max(nonresponse))
+
+df_concat <- merge(df_concat_cats, df_concat_text)
 write_csv(df_fivebox, "~/bwSyncShare/Multilabel open q/Happy_fivebox.csv")
 write_csv(df_threebox, "~/bwSyncShare/Multilabel open q/Happy_threebox.csv")
 write_csv(df_tenbox, "~/bwSyncShare/Multilabel open q/Happy_tenbox.csv")
 write_csv(df_onebox, "~/bwSyncShare/Multilabel open q/Happy_onebox.csv")
 
+write_csv(df_fivebox_single, "~/bwSyncShare/Multilabel open q/Happy_fivebox_single.csv")
+write_csv(df_threebox_single, "~/bwSyncShare/Multilabel open q/Happy_threebox_single.csv")
+write_csv(df_tenbox_single, "~/bwSyncShare/Multilabel open q/Happy_tenbox_single.csv")
 
+write_csv(df_single, "~/bwSyncShare/Multilabel open q/all_single.csv")
+write_csv(df_concat, "~/bwSyncShare/Multilabel open q/all_concat.csv")
+
+
+df <- data.frame(
+  ID = c(1, 1, 2, 2),
+  Text = c("A", "B", "C", "D")
+)
+
+# Group by the ID variable and concatenate text within each group
+result <- df %>%
+  group_by(ID) %>%
+  summarize(Concatenated_Text = paste(Text, collapse = ", "))
+
+# Print the result
+print(result)
 
 
 ### estimate a multilabel model using onebox
