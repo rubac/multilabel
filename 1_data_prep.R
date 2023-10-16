@@ -1309,11 +1309,37 @@ write_csv(df_single, "~/bwSyncShare/Multilabel open q/all_single.csv")
 write_csv(df_concat2, "~/bwSyncShare/Multilabel open q/all_concat.csv")
 
 
+### we need the same train test val data for true comparison
+### set a seed for replicability
+set.seed(1234)
+data_indices <- sample(1:nrow(df_concat2), nrow(df_concat2))
+
+train_ratio <- 0.6
+test_ratio <- 0.2
+validation_ratio <- 0.2
+
+train_size <- round(train_ratio * nrow(df_concat2))
+test_size <- round(test_ratio * nrow(df_concat2))
+validation_size <- nrow(df_concat2) - train_size - test_size
+
+train_df_concat2 <- df_concat2[data_indices[1:train_size], ]
+test_df_concat2 <- df_concat2[data_indices[(train_size + 1):(train_size + test_size)], ]
+validation_df_concat2 <- df_concat2[data_indices[(train_size + test_size + 1):nrow(df_concat2)], ]
+
+train_df_single <- df_single[df_single$lfdn %in% train_df_concat2$lfdn, ]
+test_df_single <- df_single[df_single$lfdn %in% test_df_concat2$lfdn, ]
+validation_df_single <- df_single[df_single$lfdn %in% validation_df_concat2$lfdn, ]
+
+write_csv(df_single, "~/bwSyncShare/Multilabel open q/all_single.csv")
+write_csv(test_df_single, "~/bwSyncShare/Multilabel open q/all_single_test.csv")
+write_csv(train_df_single, "~/bwSyncShare/Multilabel open q/all_single_train.csv")
+write_csv(validation_df_single, "~/bwSyncShare/Multilabel open q/all_single_val.csv")
+
+write_csv(df_concat2, "~/bwSyncShare/Multilabel open q/all_concat.csv")
+write_csv(test_df_concat2, "~/bwSyncShare/Multilabel open q/all_concat_test.csv")
+write_csv(train_df_concat2, "~/bwSyncShare/Multilabel open q/all_concat_train.csv")
+write_csv(validation_df_concat2, "~/bwSyncShare/Multilabel open q/all_concat_val.csv")
 
 
-
-### estimate a multilabel model using onebox
-### estimate a single label model using threebox, fivebox, tenbox
-###
 
 
