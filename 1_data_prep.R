@@ -1330,8 +1330,6 @@ train_df_single <- df_single[df_single$lfdn %in% train_df_concat2$lfdn, ]
 test_df_single <- df_single[df_single$lfdn %in% test_df_concat2$lfdn, ]
 validation_df_single <- df_single[df_single$lfdn %in% validation_df_concat2$lfdn, ]
 
-df_single$df_cond <- ifelse(df_single[df_single$lfdn %in% train_df_concat2$lfdn, ], "train", NA)
-
 write_csv(df_single, "~/bwSyncShare/Multilabel open q/all_single.csv")
 write_csv(test_df_single, "~/bwSyncShare/Multilabel open q/all_single_test.csv")
 write_csv(train_df_single, "~/bwSyncShare/Multilabel open q/all_single_train.csv")
