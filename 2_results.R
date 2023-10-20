@@ -73,11 +73,13 @@ list1 <- list(c(0, 1, 1, 0, 1),
               c(1, 0, 0, 1, 0),
               c(0, 0, 1, 1, 1),
               c(1, 0, 1, 0, 1),
+              c(0, 1, 1, 0, 0),
               c(0, 1, 1, 0, 0))
 list2 <- list(c(0, 1, 1, 0, 1),
               c(1, 0, 1, 1, 0),
               c(0, 0, 1, 1, 1),
               c(1, 0, 1, 0, 1),
+              c(0, 1, 1, 0, 0),
               c(0, 1, 1, 0, 0))
 
 zero_one_loss(list1, list2)
@@ -85,6 +87,7 @@ zero_one_loss(list1, list2)
 
 
 
+#### I think this is not correct!!     mismatches <- sum(vec1 != vec2)
 
 hamming_loss <- function(list1, list2) {
   total_mismatches <- 0
@@ -123,11 +126,10 @@ accuracy <-  function(list1, list2) {
 
 
 # Example usage:
-list1 <- list(c(0, 1, 0, 1, 0), c(1, 0, 0, 1, 1))
-list2 <- list(c(1, 0, 0, 1, 0), c(0, 1, 1, 1, 0))
+# list1 <- list(c(0, 1, 0, 1, 0), c(1, 0, 0, 1, 1))
+# list2 <- list(c(1, 0, 0, 1, 0), c(0, 1, 1, 1, 0))
 
-result <- hamming_loss(list1, list2)
-cat("Hamming loss:", result, "\n")
+hamming_loss(list1, list2)
 
 ################################################################################
 wide_pred_list <- wide_pred %>% 
