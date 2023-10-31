@@ -25,30 +25,6 @@ table(df$lhappro_themes)
 df$lhappro_character <- haven::as_factor(df$lhappro_character)
 table(df$lhappro_character)
 
-# df_temp <- df %>% 
-#   select(lseh1_1 , lseh1_2 , lseh1_3,lseh1_4 , lseh1_5 , lseh1_6 , lseh1_7,
-#               lseh1_8 , lseh1_9 , lseh2_11 , lseh2_12, Iseh2_13 , Iseh2_14 , 
-#               lseh2_21 , lseh2_22, lseh2_31 , lseh2_32 , lseh3_11 , lseh3_12, 
-#               lseh3_21 , Iseh3_22 , Iseh3_23 , Iseh3_24, lseh3_31 , lseh3_32 , 
-#               lseh3_41 , lseh3_42, lseh3_51 , lseh3_52 , lseh4_11 , lseh4_12, 
-#               lseh4_21 , lseh4_22 , lseh4_31 , lseh4_32, Iseh4_33 , lseh4_41 , 
-#               lseh4_42 , lseh4_51, lseh4_61 , lseh4_71 , lseh4_81 , lseh4_91,
-#               lseh4_101, lseh4_102) %>%
-#   mutate_all(~haven::as_factor(.))
-# 
-# df <- df %>% 
-#   select(-c(lseh1_1 , lseh1_2 , lseh1_3,lseh1_4 , lseh1_5 , lseh1_6 , lseh1_7,
-#             lseh1_8 , lseh1_9 , lseh2_11 , lseh2_12, Iseh2_13 , Iseh2_14 , 
-#             lseh2_21 , lseh2_22, lseh2_31 , lseh2_32 , lseh3_11 , lseh3_12, 
-#             lseh3_21 , Iseh3_22 , Iseh3_23 , Iseh3_24, lseh3_31 , lseh3_32 , 
-#             lseh3_41 , lseh3_42, lseh3_51 , lseh3_52 , lseh4_11 , lseh4_12, 
-#             lseh4_21 , lseh4_22 , lseh4_31 , lseh4_32, Iseh4_33 , lseh4_41 , 
-#             lseh4_42 , lseh4_51, lseh4_61 , lseh4_71 , lseh4_81 , lseh4_91,
-#             lseh4_101, lseh4_102))
-# 
-# df <- cbind(df, df_temp)
-# rm(df_temp)
-
 # split up data by experimental condition
 df_onebox <- df %>% 
   filter(lhap_ec=="one_box")
@@ -758,34 +734,12 @@ df_threebox_label1$label <- "One"
 df_threebox_label1$lfdn <- df_threebox$lfdn
 df_threebox_label1$answerbox <- df_threebox$answerbox
 
-# df_threebox_label2 <- predict(dummyVars(~ new_label_2, df_threebox), newdata = df_threebox)
-# colnames(df_threebox_label2) <- gsub("new_label_2", "", colnames(df_threebox_label2))
-# df_threebox_label2 <- as.data.frame(df_threebox_label2)
-# df_threebox_label2$label <- "Two"
-# df_threebox_label2$lfdn <- df_threebox$lfdn
-# df_threebox_label2$answerbox <- df_threebox$answerbox
-# 
-# df_threebox$new_label_3[which(is.na(df_threebox$new_label_3))] <- "NOOO"
-# df_threebox_label3 <- predict(dummyVars(~ new_label_3, df_threebox), newdata = df_threebox)
-# colnames(df_threebox_label3) <- gsub("new_label_3", "", colnames(df_threebox_label3))
-# df_threebox_label3 <- as.data.frame(df_threebox_label3)
-# df_threebox_label3$label <- "Three"
-# df_threebox_label3$lfdn <- df_threebox$lfdn
-# df_threebox_label3$NOOO <- NULL
-# df_threebox_label3$answerbox <- df_threebox$answerbox
-# 
-# 
-# ## there are only NAs in lab4
-# df_threebox$new_label_4 <- NULL
-# 
 
 ### for MultiCLASS Single Label
 df_threebox_single <- df_threebox %>% 
 #   filter(is.na(new_label_2)) %>% 
   select(-c(new_label_2, new_label_3))
 df_threebox_single$new_label_1[which(is.na(df_threebox_single$new_label_1))] <- "nonresponse"
-
-# df_threebox2 <- bind_rows(df_threebox_label1,df_threebox_label2,df_threebox_label3)
 
 df_threebox2 <- df_threebox_label1
 
@@ -861,33 +815,7 @@ df_fivebox_label1$label <- "One"
 df_fivebox_label1$lfdn <- df_fivebox$lfdn
 df_fivebox_label1$answerbox <- df_fivebox$answerbox
 
-# df_fivebox_label2 <- predict(dummyVars(~ new_label_2, df_fivebox), newdata = df_fivebox)
-# colnames(df_fivebox_label2) <- gsub("new_label_2", "", colnames(df_fivebox_label2))
-# df_fivebox_label2 <- as.data.frame(df_fivebox_label2)
-# df_fivebox_label2$label <- "Two"
-# df_fivebox_label2$lfdn <- df_fivebox$lfdn
-# df_fivebox_label2$answerbox <- df_fivebox$answerbox
-# 
-# # df_fivebox$new_label_3[which(is.na(df_fivebox$new_label_3))] <- "NOOO"
-# df_fivebox_label3 <- predict(dummyVars(~ new_label_3, df_fivebox), newdata = df_fivebox)
-# colnames(df_fivebox_label3) <- gsub("new_label_3", "", colnames(df_fivebox_label3))
-# df_fivebox_label3 <- as.data.frame(df_fivebox_label3)
-# df_fivebox_label3$label <- "Three"
-# df_fivebox_label3$lfdn <- df_fivebox$lfdn
-# # df_fivebox_label3$NOOO <- NULL
-# df_fivebox_label3$answerbox <- df_fivebox$answerbox
-# 
-# 
-# df_fivebox$new_label_4[which(is.na(df_fivebox$new_label_4))] <- "NOOO"
-# df_fivebox_label4 <- predict(dummyVars(~ new_label_4, df_fivebox), newdata = df_fivebox)
-# colnames(df_fivebox_label4) <- gsub("new_label_4", "", colnames(df_fivebox_label4))
-# df_fivebox_label4 <- as.data.frame(df_fivebox_label4)
-# df_fivebox_label4$label <- "Three"
-# df_fivebox_label4$lfdn <- df_fivebox$lfdn
-# df_fivebox_label4$NOOO <- NULL
-# df_fivebox_label4$answerbox <- df_fivebox$answerbox
 
-# df_fivebox2 <- bind_rows(df_fivebox_label1,df_fivebox_label2,df_fivebox_label3,df_fivebox_label4)
 df_fivebox2 <- df_fivebox_label1
 
 
@@ -904,7 +832,6 @@ df_fivebox2_A5 <- df_fivebox2 %>%
 
 ### for MultiCLASS Single Label
 df_fivebox_single <- df_fivebox %>% 
-#   filter(is.na(new_label_2)) %>% 
   select(-c(new_label_2, new_label_3, new_label_4))
 df_fivebox_single$new_label_1[which(is.na(df_fivebox_single$new_label_1))] <- "nonresponse"
 
@@ -1004,21 +931,7 @@ df_tenbox_label1$label <- "One"
 df_tenbox_label1$lfdn <- df_tenbox$lfdn
 df_tenbox_label1$answerbox <- df_tenbox$answerbox
 
-# df_tenbox_label2 <- predict(dummyVars(~ new_label_2, df_tenbox), newdata = df_tenbox)
-# colnames(df_tenbox_label2) <- gsub("new_label_2", "", colnames(df_tenbox_label2))
-# df_tenbox_label2 <- as.data.frame(df_tenbox_label2)
-# df_tenbox_label2$label <- "Two"
-# df_tenbox_label2$lfdn <- df_tenbox$lfdn
-# df_tenbox_label2$answerbox <- df_tenbox$answerbox
-# 
-# df_tenbox$new_label_3[which(is.na(df_tenbox$new_label_3))] <- "NOOO"
-# df_tenbox_label3 <- predict(dummyVars(~ new_label_3, df_tenbox), newdata = df_tenbox)
-# colnames(df_tenbox_label3) <- gsub("new_label_3", "", colnames(df_tenbox_label3))
-# df_tenbox_label3 <- as.data.frame(df_tenbox_label3)
-# df_tenbox_label3$label <- "Three"
-# df_tenbox_label3$lfdn <- df_tenbox$lfdn
-# df_tenbox_label3$NOOO <- NULL
-# df_tenbox_label3$answerbox <- df_tenbox$answerbox
+
 
 ### for MultiCLASS Single Label
 df_tenbox_single <- df_tenbox %>% 
@@ -1027,7 +940,6 @@ df_tenbox_single <- df_tenbox %>%
 df_tenbox_single$new_label_1[which(is.na(df_tenbox_single$new_label_1))] <- "nonresponse"
 
 df_tenbox2 <- df_tenbox_label1
-# df_tenbox2 <- bind_rows(df_tenbox_label1,df_tenbox_label2,df_tenbox_label3)
 df_tenbox2_A1 <- df_tenbox2 %>% 
   filter(answerbox=="box one")
 df_tenbox2_A2 <- df_tenbox2 %>% 
@@ -1296,49 +1208,49 @@ df_concatsss <- rowSums(df_concat2[,c("nonresponse",
 
 min(df_concatsss)
 
-write_csv(df_fivebox, "~/bwSyncShare/Multilabel open q/Happy_fivebox.csv")
-write_csv(df_threebox, "~/bwSyncShare/Multilabel open q/Happy_threebox.csv")
-write_csv(df_tenbox, "~/bwSyncShare/Multilabel open q/Happy_tenbox.csv")
+# write_csv(df_fivebox, "~/bwSyncShare/Multilabel open q/Happy_fivebox.csv")
+# write_csv(df_threebox, "~/bwSyncShare/Multilabel open q/Happy_threebox.csv")
+# write_csv(df_tenbox, "~/bwSyncShare/Multilabel open q/Happy_tenbox.csv")
 write_csv(df_onebox, "~/bwSyncShare/Multilabel open q/Happy_onebox.csv")
 
-write_csv(df_fivebox_single, "~/bwSyncShare/Multilabel open q/Happy_fivebox_single.csv")
-write_csv(df_threebox_single, "~/bwSyncShare/Multilabel open q/Happy_threebox_single.csv")
-write_csv(df_tenbox_single, "~/bwSyncShare/Multilabel open q/Happy_tenbox_single.csv")
+# write_csv(df_fivebox_single, "~/bwSyncShare/Multilabel open q/Happy_fivebox_single.csv")
+# write_csv(df_threebox_single, "~/bwSyncShare/Multilabel open q/Happy_threebox_single.csv")
+# write_csv(df_tenbox_single, "~/bwSyncShare/Multilabel open q/Happy_tenbox_single.csv")
 
 write_csv(df_single, "~/bwSyncShare/Multilabel open q/all_single.csv")
-write_csv(df_concat2, "~/bwSyncShare/Multilabel open q/all_concat.csv")
+# write_csv(df_concat2, "~/bwSyncShare/Multilabel open q/all_concat.csv")
 
 
 ### we need the same train test val data for true comparison
 ### set a seed for replicability
-set.seed(1234)
-data_indices <- sample(1:nrow(df_concat2), nrow(df_concat2))
-
-train_ratio <- 0.6
-test_ratio <- 0.2
-validation_ratio <- 0.2
-
-train_size <- round(train_ratio * nrow(df_concat2))
-test_size <- round(test_ratio * nrow(df_concat2))
-validation_size <- nrow(df_concat2) - train_size - test_size
-
-train_df_concat2 <- df_concat2[data_indices[1:train_size], ]
-test_df_concat2 <- df_concat2[data_indices[(train_size + 1):(train_size + test_size)], ]
-validation_df_concat2 <- df_concat2[data_indices[(train_size + test_size + 1):nrow(df_concat2)], ]
-
-train_df_single <- df_single[df_single$lfdn %in% train_df_concat2$lfdn, ]
-test_df_single <- df_single[df_single$lfdn %in% test_df_concat2$lfdn, ]
-validation_df_single <- df_single[df_single$lfdn %in% validation_df_concat2$lfdn, ]
+# set.seed(1234)
+# data_indices <- sample(1:nrow(df_concat2), nrow(df_concat2))
+# 
+# train_ratio <- 0.6
+# test_ratio <- 0.2
+# validation_ratio <- 0.2
+# 
+# train_size <- round(train_ratio * nrow(df_concat2))
+# test_size <- round(test_ratio * nrow(df_concat2))
+# validation_size <- nrow(df_concat2) - train_size - test_size
+# 
+# train_df_concat2 <- df_concat2[data_indices[1:train_size], ]
+# test_df_concat2 <- df_concat2[data_indices[(train_size + 1):(train_size + test_size)], ]
+# validation_df_concat2 <- df_concat2[data_indices[(train_size + test_size + 1):nrow(df_concat2)], ]
+# 
+# train_df_single <- df_single[df_single$lfdn %in% train_df_concat2$lfdn, ]
+# test_df_single <- df_single[df_single$lfdn %in% test_df_concat2$lfdn, ]
+# validation_df_single <- df_single[df_single$lfdn %in% validation_df_concat2$lfdn, ]
 
 write_csv(df_single, "~/bwSyncShare/Multilabel open q/all_single.csv")
-write_csv(test_df_single, "~/bwSyncShare/Multilabel open q/all_single_test.csv")
-write_csv(train_df_single, "~/bwSyncShare/Multilabel open q/all_single_train.csv")
-write_csv(validation_df_single, "~/bwSyncShare/Multilabel open q/all_single_val.csv")
+# write_csv(test_df_single, "~/bwSyncShare/Multilabel open q/all_single_test.csv")
+# write_csv(train_df_single, "~/bwSyncShare/Multilabel open q/all_single_train.csv")
+# write_csv(validation_df_single, "~/bwSyncShare/Multilabel open q/all_single_val.csv")
 
-write_csv(df_concat2, "~/bwSyncShare/Multilabel open q/all_concat.csv")
-write_csv(test_df_concat2, "~/bwSyncShare/Multilabel open q/all_concat_test.csv")
-write_csv(train_df_concat2, "~/bwSyncShare/Multilabel open q/all_concat_train.csv")
-write_csv(validation_df_concat2, "~/bwSyncShare/Multilabel open q/all_concat_val.csv")
+# write_csv(df_concat2, "~/bwSyncShare/Multilabel open q/all_concat.csv")
+# write_csv(test_df_concat2, "~/bwSyncShare/Multilabel open q/all_concat_test.csv")
+# write_csv(train_df_concat2, "~/bwSyncShare/Multilabel open q/all_concat_train.csv")
+# write_csv(validation_df_concat2, "~/bwSyncShare/Multilabel open q/all_concat_val.csv")
 
 
 
