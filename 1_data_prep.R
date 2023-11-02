@@ -1253,5 +1253,24 @@ write_csv(df_single, "~/bwSyncShare/Multilabel open q/all_single.csv")
 # write_csv(validation_df_concat2, "~/bwSyncShare/Multilabel open q/all_concat_val.csv")
 
 
+head(df_onebox)
+
+### descriptive stats for Table 1 and 2
+df_onebox %>%
+  summary()
+
+table(df_onebox$social_network_surrounding)
+table(df_onebox$rest)
+table(df_onebox$nonresponse)
+table(df_onebox$time_references)
+table(df_onebox$life_event)
+table(df_onebox$politics_security_society)
+table(df_onebox$life_situation_living_conditions)
+table(df_onebox$financial_situation)
+table(df_onebox$job)
+table(df_onebox$health)
+
+table(row_sums <- rowSums(df_onebox[c("social_network_surrounding", "rest", "nonresponse", "time_references", "life_event", "politics_security_society", "life_situation_living_conditions", "financial_situation","job", "health" ) ]))
 
 
+table(df_single$new_label_1)
