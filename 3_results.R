@@ -38,9 +38,15 @@ zer_plot <- ggplot(df.comb.plot) +
     axis.text = element_text(color = "black"),
     axis.title = element_text(color = "black"),
     panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank()
+    panel.grid.minor = element_blank(),
+    axis.text.y = element_text(size = 14), 
+    axis.text.x = element_text(size = 14), # Adjust the y-axis font size
+    axis.title.x = element_text(size = 16),      # Adjust the x-axis label font size
+    legend.text = element_text(size = 14),       # Adjust the legend font size
+    axis.title.y = element_text(size = 16),      # Adjust the y-axis label font size
+    legend.title = element_text(size = 16)
   ) +
-  labs(x = "Condition", y = "Zero-one-loss") +
+  labs(x = "", y = "Zero-one-loss") +
   scale_x_discrete(labels = c("Multi-label", "Single-label"))
 
 acc_plot <- ggplot(df.comb.plot) +
@@ -52,9 +58,15 @@ acc_plot <- ggplot(df.comb.plot) +
     axis.text = element_text(color = "black"),
     axis.title = element_text(color = "black"),
     panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank()
+    panel.grid.minor = element_blank(),
+    axis.text.y = element_text(size = 14), 
+    axis.text.x = element_text(size = 14), # Adjust the y-axis font size
+    axis.title.x = element_text(size = 16),      # Adjust the x-axis label font size
+    legend.text = element_text(size = 14),       # Adjust the legend font size
+    axis.title.y = element_text(size = 16),      # Adjust the y-axis label font size
+    legend.title = element_text(size = 16)
   ) +
-  labs(x = "Condition", y = "Accuracy") + 
+  labs(x = "", y = "Accuracy") + 
   scale_x_discrete(labels = c("Multi-label", "Single-label"))
 
 ham_plot <- ggplot(df.comb.plot) +
@@ -66,12 +78,18 @@ ham_plot <- ggplot(df.comb.plot) +
     axis.text = element_text(color = "black"),
     axis.title = element_text(color = "black"),
     panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank()
+    panel.grid.minor = element_blank(),
+    axis.text.y = element_text(size = 14), 
+    axis.text.x = element_text(size = 14), # Adjust the y-axis font size
+    axis.title.x = element_text(size = 16),      # Adjust the x-axis label font size
+    legend.text = element_text(size = 14),       # Adjust the legend font size
+    axis.title.y = element_text(size = 16),      # Adjust the y-axis label font size
+    legend.title = element_text(size = 16)
   ) +
-  labs(x = "Condition", y = "Hamming-loss") +
+  labs(x = "", y = "Hamming-loss") +
   scale_x_discrete(labels = c("Multi-label", "Single-label"))
 
 
 library(gridExtra)
 combined_plot <- grid.arrange(acc_plot, ham_plot, zer_plot, ncol = 3)
-ggsave("~/bwSyncShare/Multilabel open q/results/combined_plot.eps", combined_plot, device = cairo_ps)
+ggsave("~/bwSyncShare/Multilabel open q/results/combined_plot.eps", combined_plot, device = cairo_ps, width = 10, height = 6)
