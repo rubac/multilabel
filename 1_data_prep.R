@@ -1218,6 +1218,12 @@ write_csv(df_onebox, "~/bwSyncShare/Multilabel open q/Happy_onebox.csv")
 # write_csv(df_tenbox_single, "~/bwSyncShare/Multilabel open q/Happy_tenbox_single.csv")
 
 write_csv(df_single, "~/bwSyncShare/Multilabel open q/all_single.csv")
+names(df_onebox)
+df_concat2 <- select(df_concat2, lfdn, text, rest, nonresponse, time_references, life_event,
+                    politics_security_society, life_situation_living_conditions, 
+                    financial_situation, job, health, social_network_surrounding)
+names(df_concat2)
+
 write_csv(df_concat2, "~/bwSyncShare/Multilabel open q/all_concat.csv")
 
 
