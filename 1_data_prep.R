@@ -1218,7 +1218,7 @@ write_csv(df_onebox, "~/bwSyncShare/Multilabel open q/Happy_onebox.csv")
 # write_csv(df_tenbox_single, "~/bwSyncShare/Multilabel open q/Happy_tenbox_single.csv")
 
 write_csv(df_single, "~/bwSyncShare/Multilabel open q/all_single.csv")
-# write_csv(df_concat2, "~/bwSyncShare/Multilabel open q/all_concat.csv")
+write_csv(df_concat2, "~/bwSyncShare/Multilabel open q/all_concat.csv")
 
 
 ### we need the same train test val data for true comparison
@@ -1242,7 +1242,7 @@ write_csv(df_single, "~/bwSyncShare/Multilabel open q/all_single.csv")
 # test_df_single <- df_single[df_single$lfdn %in% test_df_concat2$lfdn, ]
 # validation_df_single <- df_single[df_single$lfdn %in% validation_df_concat2$lfdn, ]
 
-write_csv(df_single, "~/bwSyncShare/Multilabel open q/all_single.csv")
+# write_csv(df_single, "~/bwSyncShare/Multilabel open q/all_single.csv")
 # write_csv(test_df_single, "~/bwSyncShare/Multilabel open q/all_single_test.csv")
 # write_csv(train_df_single, "~/bwSyncShare/Multilabel open q/all_single_train.csv")
 # write_csv(validation_df_single, "~/bwSyncShare/Multilabel open q/all_single_val.csv")
