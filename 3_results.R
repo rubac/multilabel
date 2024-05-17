@@ -65,7 +65,7 @@ zer_plot <- ggplot(df.comb.plot) +
     legend.title = element_text(size = 16)
   ) +
   labs(x = "", y = "Zero-one-loss") +
-  scale_x_discrete(labels = c("Multi-label", "Single-label", "Concat.-multi-label"))
+  scale_x_discrete(labels = c("Concat.-multi-label", "Multi-label", "Single-label"))
 
 acc_plot <- ggplot(df.comb.plot) +
   geom_bar(aes(x=cond, y=acc_m), stat="identity", fill="gray", alpha=0.7) + # Adjust alpha here
@@ -85,7 +85,7 @@ acc_plot <- ggplot(df.comb.plot) +
     legend.title = element_text(size = 16)
   ) +
   labs(x = "", y = "Accuracy") + 
-  scale_x_discrete(labels = c("Multi-label", "Single-label", "Concat.-multi-label"))
+  scale_x_discrete(labels = c("Concat.-multi-label", "Multi-label", "Single-label"))
 
 ham_plot <- ggplot(df.comb.plot) +
   geom_bar(aes(x=cond, y=ham_m), stat="identity", fill="gray", alpha=0.7) + # Adjust alpha here
@@ -105,7 +105,7 @@ ham_plot <- ggplot(df.comb.plot) +
     legend.title = element_text(size = 16)
   ) +
   labs(x = "", y = "Hamming-loss") +
-  scale_x_discrete(labels = c("Multi-label", "Single-label", "Concat.-multi-label"))
+  scale_x_discrete(labels = c("Concat.-multi-label", "Multi-label", "Single-label"))
 
 
 library(gridExtra)
