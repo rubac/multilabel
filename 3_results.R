@@ -21,9 +21,21 @@ multi_concat_results %>%
 
 df.comb <- rbind(single_results, multi_results, multi_concat_results)
 
-t.test(accuracy~cond, var.equal = F, alternative = "two.sided", data = df.comb)
-t.test(hamming_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb)
-t.test(zero_one_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb)
+## single vs multi
+t.test(accuracy~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="concat",])
+t.test(hamming_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="concat",])
+t.test(zero_one_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="concat",])
+
+## single vs concat
+t.test(accuracy~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="multi",])
+t.test(hamming_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="multi",])
+t.test(zero_one_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="multi",])
+
+## multi cs concat
+t.test(accuracy~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="single",])
+t.test(hamming_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="single",])
+t.test(zero_one_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="single",])
+
 
 df.comb.plot = df.comb %>% 
   group_by(cond) %>% 
@@ -53,7 +65,7 @@ zer_plot <- ggplot(df.comb.plot) +
     legend.title = element_text(size = 16)
   ) +
   labs(x = "", y = "Zero-one-loss") +
-  scale_x_discrete(labels = c("Multi-label", "Single-label"))
+  scale_x_discrete(labels = c("Multi-label", "Single-label", "Concat.-multi-label"))
 
 acc_plot <- ggplot(df.comb.plot) +
   geom_bar(aes(x=cond, y=acc_m), stat="identity", fill="gray", alpha=0.7) + # Adjust alpha here
@@ -73,7 +85,7 @@ acc_plot <- ggplot(df.comb.plot) +
     legend.title = element_text(size = 16)
   ) +
   labs(x = "", y = "Accuracy") + 
-  scale_x_discrete(labels = c("Multi-label", "Single-label"))
+  scale_x_discrete(labels = c("Multi-label", "Single-label", "Concat.-multi-label"))
 
 ham_plot <- ggplot(df.comb.plot) +
   geom_bar(aes(x=cond, y=ham_m), stat="identity", fill="gray", alpha=0.7) + # Adjust alpha here
@@ -93,7 +105,7 @@ ham_plot <- ggplot(df.comb.plot) +
     legend.title = element_text(size = 16)
   ) +
   labs(x = "", y = "Hamming-loss") +
-  scale_x_discrete(labels = c("Multi-label", "Single-label"))
+  scale_x_discrete(labels = c("Multi-label", "Single-label", "Concat.-multi-label"))
 
 
 library(gridExtra)
