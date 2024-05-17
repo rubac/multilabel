@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 # install libraries
-!pip install simpletransformers
-!pip install scikit-learn
-!pip install torch
+# !pip install simpletransformers
+# !pip install scikit-learn
+# !pip install torch
 
 import pandas as pd
 import numpy as np
