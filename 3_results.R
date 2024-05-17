@@ -58,7 +58,7 @@ zer_plot <- ggplot(df.comb.plot) +
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
     axis.text.y = element_text(size = 14), 
-    axis.text.x = element_text(size = 14), # Adjust the y-axis font size
+    axis.text.x = element_text(size = 14, angle = 45, hjust = 1), # Adjust the y-axis font size
     axis.title.x = element_text(size = 16),      # Adjust the x-axis label font size
     legend.text = element_text(size = 14),       # Adjust the legend font size
     axis.title.y = element_text(size = 16),      # Adjust the y-axis label font size
@@ -78,7 +78,7 @@ acc_plot <- ggplot(df.comb.plot) +
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
     axis.text.y = element_text(size = 14), 
-    axis.text.x = element_text(size = 14), # Adjust the y-axis font size
+    axis.text.x = element_text(size = 14, angle = 45, hjust = 1), # Adjust the y-axis font size
     axis.title.x = element_text(size = 16),      # Adjust the x-axis label font size
     legend.text = element_text(size = 14),       # Adjust the legend font size
     axis.title.y = element_text(size = 16),      # Adjust the y-axis label font size
@@ -98,7 +98,7 @@ ham_plot <- ggplot(df.comb.plot) +
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
     axis.text.y = element_text(size = 14), 
-    axis.text.x = element_text(size = 14), # Adjust the y-axis font size
+    axis.text.x = element_text(size = 14, angle = 45, hjust = 1), # Adjust the y-axis font size
     axis.title.x = element_text(size = 16),      # Adjust the x-axis label font size
     legend.text = element_text(size = 14),       # Adjust the legend font size
     axis.title.y = element_text(size = 16),      # Adjust the y-axis label font size
