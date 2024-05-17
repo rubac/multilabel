@@ -1,6 +1,7 @@
 library(tidyverse)
-single_results <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_single_100run.csv")
-multi_results <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_till1000.csv")
+single_results <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_single.csv")
+multi_results <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_multi.csv")
+multi_concat_results <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_concat.csv")
 
 single_results %>%
   summarise(across(accuracy:hamming_loss, list(mean=mean, sd=sd, median=median), na.rm=TRUE))
@@ -13,7 +14,12 @@ multi_results <- multi_results %>%
 multi_results %>%
   summarise(across(accuracy:hamming_loss, list(mean=mean, sd=sd, median=median), na.rm=TRUE))
 
-df.comb <- rbind(single_results, multi_results)
+multi_concat_results <- multi_concat_results %>% 
+  mutate(cond = "concat")
+multi_concat_results %>%
+  summarise(across(accuracy:hamming_loss, list(mean=mean, sd=sd, median=median), na.rm=TRUE))
+
+df.comb <- rbind(single_results, multi_results, multi_concat_results)
 
 t.test(accuracy~cond, var.equal = F, alternative = "two.sided", data = df.comb)
 t.test(hamming_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb)
