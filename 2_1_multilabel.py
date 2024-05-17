@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-"""Untitled1.ipynb
-
-"""
 
 # install libraries
 !pip install simpletransformers
@@ -19,6 +16,7 @@ from sklearn.model_selection import train_test_split
 # from google.colab import drive
 # drive.mount('/content/drive')
 
+# %cd /content/drive/My Drive/Colab Notebooks/multilabel/
 import torch
 cuda_available = torch.cuda.is_available()
 
@@ -82,7 +80,7 @@ def fraction_three_label(y_true, prob):
 def av_labels_correct(labels, preds):
     return accuracy_score(labels, np.round(preds))
 
-df = pd.read_csv('Happy_onebox.csv')
+df = pd.read_csv(r'Happy_onebox.csv')
 selected_columns = df.iloc[:, 2:12]
 
 labels = selected_columns.values.tolist()
@@ -115,7 +113,7 @@ test_perf = []
 
 # 2 random splits and run the experiment --- increase when running experiment for real
 # for split_index in range(2):   for testing
-for split_index in range(1000):
+for split_index in range(100):
     # Create a new random split of the data
     train_df, val_df, test_df = np.split(df.sample(frac=1, random_state=split_index), [int(.6*len(df)), int(.8*len(df))])
     validation_results = []
@@ -180,4 +178,4 @@ for split_index in range(1000):
 
 # At end, write test results to a CSV file
 test_results_df = pd.DataFrame(test_perf)
-test_results_df.to_csv("test_results.csv", index=False)
+test_results_df.to_csv(r"test_results_multi.csv", index=False)
