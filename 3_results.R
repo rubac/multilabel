@@ -112,5 +112,5 @@ library(gridExtra)
 combined_plot_two <- grid.arrange(ham_plot, zer_plot, ncol = 2)
 combined_plot <- grid.arrange(acc_plot, ham_plot, zer_plot, ncol = 3)
 
-ggsave("~/bwSyncShare/Multilabel open q/results/combined_plot_two.eps", combined_plot_two, device = cairo_ps, width = 10, height = 6)
-ggsave("~/bwSyncShare/Multilabel open q/results/combined_plot.eps", combined_plot, device = cairo_ps, width = 10, height = 6)
+ggsave("~/bwSyncShare/Multilabel open q/results/3_combined_plot_two.eps", combined_plot_two, device = cairo_ps, width = 10, height = 6)
+ggsave("~/bwSyncShare/Multilabel open q/results/3_combined_plot.eps", combined_plot, device = cairo_ps, width = 10, height = 6)
