@@ -190,12 +190,11 @@ for split_index in range(100):
         'zero_one_loss': zero_one_loss(wide_true_list, wide_pred_list),
         'hamming_loss': hamming_loss_new(wide_true_list, wide_pred_list)
     })
+    # At end of each split, write test results to a CSV file
+    test_results_df = pd.DataFrame(test_perf)
+    test_results_df.to_csv(r"C:\Users\rbach\Documents\multilabel_ruben\results\test_results_single_samesize.csv", index=False)
 
-wide_true_list[0]
-# result_df
-
-test_perf
 
 # At end, write test results to a CSV file
 test_results_df = pd.DataFrame(test_perf)
-test_results_df.to_csv(r"C:\Users\rbach\Documents\multilabel_ruben\test_results_single_samesize.csv", index=False)
+test_results_df.to_csv(r"C:\Users\rbach\Documents\multilabel_ruben\results\test_results_single_samesize.csv", index=False)

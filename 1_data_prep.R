@@ -3,7 +3,7 @@ library(tidyverse)
 library(haven)
 
 # read data from Katharina
-df <- read_dta("~/bwSyncShare/Multilabel open q/Dataset_Happy.dta")
+df <- read_dta("~/bwSyncShare/Multilabel open q/data/Dataset_Happy.dta")
 
 # make some changes to the weird formats resulting from the dta import
 df$lhappro_character <- haven::as_factor(df$lhappro_character)
@@ -1208,8 +1208,8 @@ df_concatsss <- rowSums(df_concat2[,c("nonresponse",
 
 min(df_concatsss)
 
-write_csv(df_onebox, "~/bwSyncShare/Multilabel open q/Happy_onebox.csv")
-write_csv(df_single, "~/bwSyncShare/Multilabel open q/all_single.csv")
+write_csv(df_onebox, "~/bwSyncShare/Multilabel open q/data/Happy_onebox.csv")
+write_csv(df_single, "~/bwSyncShare/Multilabel open q/data/all_single.csv")
 names(df_onebox)
 
 df_concat2 <- select(df_concat2, lfdn, text, rest, nonresponse, time_references, life_event,
@@ -1217,7 +1217,7 @@ df_concat2 <- select(df_concat2, lfdn, text, rest, nonresponse, time_references,
                     financial_situation, job, health, social_network_surrounding)
 names(df_concat2)
 
-write_csv(df_concat2, "~/bwSyncShare/Multilabel open q/all_concat.csv")
+write_csv(df_concat2, "~/bwSyncShare/Multilabel open q/data/all_concat.csv")
 
 head(df_onebox)
 

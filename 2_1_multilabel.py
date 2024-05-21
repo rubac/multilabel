@@ -366,8 +366,8 @@ for split_index in range(2):
     
     # At end of each split, write test results to a CSV file
     test_results_df = pd.DataFrame(test_perf)
-    test_results_df.to_csv(r"C:\Users\rbach\Documents\multilabel_ruben\test_results.csv", index=False)
+    test_results_df.to_csv(r"C:\Users\rbach\Documents\multilabel_ruben\results\test_results_multi.csv", index=False)
 
 # Final write to ensure all results are saved
 test_results_df = pd.DataFrame(test_perf)
-test_results_df.to_csv(r"C:\Users\rbach\Documents\multilabel_ruben\test_results_multi.csv", index=False)
+test_results_df.to_csv(r"C:\Users\rbach\Documents\multilabel_ruben\results\test_results_multi.csv", index=False)
