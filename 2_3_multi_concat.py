@@ -1,7 +1,6 @@
 
 # -*- coding: utf-8 -*-
 
-
 # install libraries
 # !pip install simpletransformers
 # !pip install scikit-learn
@@ -269,7 +268,7 @@ def fraction_three_label(y_true, prob):
 def av_labels_correct(labels, preds):
     return accuracy_score(labels, np.round(preds))
 
-df = pd.read_csv(r'C:\Users\rbach\Documents\multilabel_ruben\happy_onebox.csv')
+df = pd.read_csv(r'C:\Users\rbach\Documents\multilabel_ruben\all_concat.csv')
 selected_columns = df.iloc[:, 2:12]
 
 labels = selected_columns.values.tolist()
@@ -370,4 +369,5 @@ for split_index in range(2):
 
 # Final write to ensure all results are saved
 test_results_df = pd.DataFrame(test_perf)
-test_results_df.to_csv(r"C:\Users\rbach\Documents\multilabel_ruben\test_results_multi.csv", index=False)
+test_results_df.to_csv(r"C:\Users\rbach\Documents\multilabel_ruben\test_results_concat.csv", index=False)
+

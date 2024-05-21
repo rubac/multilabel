@@ -45,6 +45,7 @@ def hamming_loss_new(y_true, y_pred):
 
 # Commented out IPython magic to ensure Python compatibility.
 df = pd.read_csv(r'C:\Users\rbach\Documents\multilabel_ruben\all_single.csv')
+df = df.sample(n=553)
 df = df[['text', 'new_label_1', "lfdn"]]
 df['label'] = pd.factorize(df['new_label_1'])[0]
 df = df.drop(columns=['new_label_1'])
@@ -197,4 +198,4 @@ test_perf
 
 # At end, write test results to a CSV file
 test_results_df = pd.DataFrame(test_perf)
-test_results_df.to_csv(r"C:\Users\rbach\Documents\multilabel_ruben\test_results_single.csv", index=False)
+test_results_df.to_csv(r"C:\Users\rbach\Documents\multilabel_ruben\test_results_single_samesize.csv", index=False)

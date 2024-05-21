@@ -1208,56 +1208,16 @@ df_concatsss <- rowSums(df_concat2[,c("nonresponse",
 
 min(df_concatsss)
 
-# write_csv(df_fivebox, "~/bwSyncShare/Multilabel open q/Happy_fivebox.csv")
-# write_csv(df_threebox, "~/bwSyncShare/Multilabel open q/Happy_threebox.csv")
-# write_csv(df_tenbox, "~/bwSyncShare/Multilabel open q/Happy_tenbox.csv")
 write_csv(df_onebox, "~/bwSyncShare/Multilabel open q/Happy_onebox.csv")
-
-# write_csv(df_fivebox_single, "~/bwSyncShare/Multilabel open q/Happy_fivebox_single.csv")
-# write_csv(df_threebox_single, "~/bwSyncShare/Multilabel open q/Happy_threebox_single.csv")
-# write_csv(df_tenbox_single, "~/bwSyncShare/Multilabel open q/Happy_tenbox_single.csv")
-
 write_csv(df_single, "~/bwSyncShare/Multilabel open q/all_single.csv")
 names(df_onebox)
+
 df_concat2 <- select(df_concat2, lfdn, text, rest, nonresponse, time_references, life_event,
                     politics_security_society, life_situation_living_conditions, 
                     financial_situation, job, health, social_network_surrounding)
 names(df_concat2)
 
 write_csv(df_concat2, "~/bwSyncShare/Multilabel open q/all_concat.csv")
-
-
-### we need the same train test val data for true comparison
-### set a seed for replicability
-# set.seed(1234)
-# data_indices <- sample(1:nrow(df_concat2), nrow(df_concat2))
-# 
-# train_ratio <- 0.6
-# test_ratio <- 0.2
-# validation_ratio <- 0.2
-# 
-# train_size <- round(train_ratio * nrow(df_concat2))
-# test_size <- round(test_ratio * nrow(df_concat2))
-# validation_size <- nrow(df_concat2) - train_size - test_size
-# 
-# train_df_concat2 <- df_concat2[data_indices[1:train_size], ]
-# test_df_concat2 <- df_concat2[data_indices[(train_size + 1):(train_size + test_size)], ]
-# validation_df_concat2 <- df_concat2[data_indices[(train_size + test_size + 1):nrow(df_concat2)], ]
-# 
-# train_df_single <- df_single[df_single$lfdn %in% train_df_concat2$lfdn, ]
-# test_df_single <- df_single[df_single$lfdn %in% test_df_concat2$lfdn, ]
-# validation_df_single <- df_single[df_single$lfdn %in% validation_df_concat2$lfdn, ]
-
-# write_csv(df_single, "~/bwSyncShare/Multilabel open q/all_single.csv")
-# write_csv(test_df_single, "~/bwSyncShare/Multilabel open q/all_single_test.csv")
-# write_csv(train_df_single, "~/bwSyncShare/Multilabel open q/all_single_train.csv")
-# write_csv(validation_df_single, "~/bwSyncShare/Multilabel open q/all_single_val.csv")
-
-# write_csv(df_concat2, "~/bwSyncShare/Multilabel open q/all_concat.csv")
-# write_csv(test_df_concat2, "~/bwSyncShare/Multilabel open q/all_concat_test.csv")
-# write_csv(train_df_concat2, "~/bwSyncShare/Multilabel open q/all_concat_train.csv")
-# write_csv(validation_df_concat2, "~/bwSyncShare/Multilabel open q/all_concat_val.csv")
-
 
 head(df_onebox)
 
