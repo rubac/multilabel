@@ -44,7 +44,7 @@ def hamming_loss_new(y_true, y_pred):
     return hl_num / hl_den
 
 # Commented out IPython magic to ensure Python compatibility.
-df = pd.read_csv(r'C:\Users\rbach\Documents\multilabel_ruben\all_single.csv')
+df = pd.read_csv(r'C:\Users\rbach\Documents\multilabel_ruben\data\all_single.csv')
 df = df[['text', 'new_label_1', "lfdn"]]
 df['label'] = pd.factorize(df['new_label_1'])[0]
 df = df.drop(columns=['new_label_1'])
