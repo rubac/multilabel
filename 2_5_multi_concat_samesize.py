@@ -78,7 +78,6 @@ def av_labels_correct(labels, preds):
 
 df = pd.read_csv(r'C:\Users\rbach\Documents\multilabel_ruben\data\all_concat.csv')
 selected_columns = df.iloc[:, 2:12]
-df = df.sample(n=553)
 
 labels = selected_columns.values.tolist()
 df['labels'] = labels
@@ -111,6 +110,7 @@ test_perf = []
 # 2 random splits and run the experiment --- increase when running experiment for real
 # for split_index in range(2):   for testing
 for split_index in range(100):
+    df = df.sample(n=553, random_state=split_index)
     # Create a new random split of the data
     train_df, val_df, test_df = np.split(df.sample(frac=1, random_state=split_index), [int(.6*len(df)), int(.8*len(df))])
     validation_results = []
