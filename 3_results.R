@@ -3,7 +3,12 @@ single_results <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results
 multi_results <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_multi.csv")
 multi_concat_results <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_concat.csv")
 multi_concat_samesize <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_concat_samesize.csv")
+single_results_samesize <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_single_samesize.csv")
 
+single_results_samesize %>%
+  summarise(across(accuracy:hamming_loss, list(mean=mean, sd=sd, median=median), na.rm=TRUE))
+single_results_samesize <- single_results_samesize %>% 
+  mutate(cond = "single_same")
 
 single_results %>%
   summarise(across(accuracy:hamming_loss, list(mean=mean, sd=sd, median=median), na.rm=TRUE))
@@ -45,7 +50,7 @@ t.test(accuracy~cond, var.equal = F, alternative = "two.sided", data = df.comb[d
 t.test(hamming_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="single",])
 t.test(zero_one_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="single",])
 
-df.comb.2 <- rbind(single_results, multi_results, multi_concat_results, multi_concat_samesize)
+df.comb.2 <- rbind(single_results, multi_results, multi_concat_results, multi_concat_samesize, single_results_samesize)
 ## concat vs concat_same size
 
 
