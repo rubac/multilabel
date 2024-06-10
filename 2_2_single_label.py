@@ -119,16 +119,16 @@ for split_index in range(100):
             num_labels=10,
             use_cuda=cuda_available,
             args=train_args
-        )
+            )
 
-        # Train the model
-        model.train_model(train_df)
+            # Train the model
+            model.train_model(train_df)
 
 
-        # Evaluate the model on the validation set
-        val_result, val_model_outputs, val_wrong_predictions = model.eval_model(val_df, f1=f1_multiclass, acc=accuracy_score)
-        # We evaluate on average accuracy, which is no different from zero one loss (av_acc = 1 - zero_one_loss))
-        if val_result["acc"] > best_val_acc:
+            # Evaluate the model on the validation set
+            val_result, val_model_outputs, val_wrong_predictions = model.eval_model(val_df, f1=f1_multiclass, acc=accuracy_score)
+            # We evaluate on average accuracy, which is no different from zero one loss (av_acc = 1 - zero_one_loss))
+            if val_result["acc"] > best_val_acc:
                 best_val_acc = val_result["acc"]
                 best_lr = lr
                 best_epochs = epochs
