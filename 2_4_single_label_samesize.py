@@ -96,7 +96,7 @@ test_perf = []
 # for split_index in range(2):   for testing
 for split_index in range(100):
     # Create a new random split of the data with size of multilabel data
-    df = df.sample(n=553, random_state=split_index)
+    df = df.sample(n=977, random_state=split_index)
     # train_df, val_df, test_df = np.split(df.sample(frac=1, random_state=split_index, stratified = ), [int(.6*len(df)), int(.8*len(df))])
     train_df, temp_df = train_test_split(df, test_size=0.4, random_state=split_index, stratify=df['label'])
 
@@ -171,7 +171,10 @@ for split_index in range(100):
     for col in columns_true:
       if col not in columns_pred:
         wide_pred[col] = 0
-
+    missing_columns = [col for col in columns_pred if col not in columns_true]
+    for col in columns_pred:
+      if col not in columns_true:
+        wide_pred[col] = 0
 
     wide_pred_list = wide_pred.drop(['text'], axis=1)
     wide_pred_list = wide_pred_list.apply(lambda x: x.values.tolist(), axis=1)
