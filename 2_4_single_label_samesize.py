@@ -174,7 +174,7 @@ for split_index in range(100):
     missing_columns = [col for col in columns_pred if col not in columns_true]
     for col in columns_pred:
       if col not in columns_true:
-        wide_pred[col] = 0
+        wide_true[col] = 0
 
     wide_pred_list = wide_pred.drop(['text'], axis=1)
     wide_pred_list = wide_pred_list.apply(lambda x: x.values.tolist(), axis=1)
