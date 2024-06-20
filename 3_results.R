@@ -73,7 +73,7 @@ df.comb.plot = df.comb.2 %>%
         ham_m = mean(hamming_loss))
 
 
-zer_plot <- ggplot(df.comb.plot[df.comb.plot$cond!="concat",]) +
+zer_plot <- ggplot(df.comb.plot) +
   geom_bar(aes(x=cond, y=zer_m), stat="identity", fill="gray", alpha=0.7) + # Adjust alpha here
   geom_errorbar(aes(x=cond, ymin=zer_m-zer_se, ymax=zer_m+zer_se), width=.5, alpha=1, size=.5) +
   theme_minimal() +
@@ -91,7 +91,7 @@ zer_plot <- ggplot(df.comb.plot[df.comb.plot$cond!="concat",]) +
     legend.title = element_text(size = 16)
   ) +
   labs(x = "", y = "Zero-one-loss") +
-  scale_x_discrete(labels = c("Concat.-multi-label", "Concat.-multi-label (small)", "Multi-label", "Single-label"))
+  scale_x_discrete(labels = c("Concat.-multi-label", "Concat.-multi-label (small)", "Multi-label", "Single-label", "Single-label (small)"))
 
 acc_plot <- ggplot(df.comb.plot) +
   geom_bar(aes(x=cond, y=acc_m), stat="identity", fill="gray", alpha=0.7) + # Adjust alpha here
@@ -111,9 +111,9 @@ acc_plot <- ggplot(df.comb.plot) +
     legend.title = element_text(size = 16)
   ) +
   labs(x = "", y = "Accuracy") + 
-  scale_x_discrete(labels = c("Concat.-multi-label", "Concat.-multi-label (small)", "Multi-label", "Single-label"))
+  scale_x_discrete(labels = c("Concat.-multi-label", "Concat.-multi-label (small)", "Multi-label", "Single-label", "Single-label (small)"))
 
-ham_plot <- ggplot(df.comb.plot[df.comb.plot$cond!="concat",]) +
+ham_plot <- ggplot(df.comb.plot) +
   geom_bar(aes(x=cond, y=ham_m), stat="identity", fill="gray", alpha=0.7) + # Adjust alpha here
   geom_errorbar(aes(x=cond, ymin=ham_m-ham_se, ymax=ham_m+ham_se), width=.5, alpha=1, size=.5) +
   theme_minimal() +
@@ -131,7 +131,7 @@ ham_plot <- ggplot(df.comb.plot[df.comb.plot$cond!="concat",]) +
     legend.title = element_text(size = 16)
   ) +
   labs(x = "", y = "Hamming-loss") +
-  scale_x_discrete(labels = c("Concat.-multi-label", "Concat.-multi-label (small)", "Multi-label", "Single-label"))
+  scale_x_discrete(labels = c("Concat.-multi-label", "Concat.-multi-label (small)", "Multi-label", "Single-label", "Single-label (small)"))
 
 
 library(gridExtra)
