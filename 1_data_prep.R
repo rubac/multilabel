@@ -1117,8 +1117,7 @@ df_tenbox2 <- rbind(df_tenbox2_A1, df_tenbox2_A2, df_tenbox2_A3, df_tenbox2_A4, 
 df_tenbox <- merge(df_tenbox, df_tenbox2)
 df_tenbox <- df_tenbox %>% 
   select(-c(starts_with("new_lab")))
-rm(df_tenbox2, df_tenbox_label1, df_tenbox_label2, df_tenbox_label3,
-   df_tenbox2_A1, df_tenbox2_A2, df_tenbox2_A3, df_tenbox2_A4, df_tenbox2_A5
+rm(df_tenbox2, df_tenbox_label1, df_tenbox2_A1, df_tenbox2_A2, df_tenbox2_A3, df_tenbox2_A4, df_tenbox2_A5
    , df_tenbox2_A6, df_tenbox2_A7, df_tenbox2_A8, df_tenbox2_A9, df_tenbox2_A10)
 
 # check if there are multilabel answers in the nonmultilabel setting

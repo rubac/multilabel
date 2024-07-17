@@ -43,20 +43,20 @@ multi_results %>%
 
 df.comb <- rbind(single_ten, single_three, single_five, multi_results)
 
-## single vs multi
-# t.test(accuracy~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="concat_same",])
-t.test(hamming_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="concat_same",])
-t.test(zero_one_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="concat_same",])
-
-## single vs concat
-# t.test(accuracy~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="multi",])
-t.test(hamming_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="multi",])
-t.test(zero_one_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="multi",])
-
-## multi cs concat
-# t.test(accuracy~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="single_same",])
-t.test(hamming_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="single_same",])
-t.test(zero_one_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="single_same",])
+# ## single vs multi
+# # t.test(accuracy~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="concat_same",])
+# t.test(hamming_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond=="concat_same",])
+# t.test(zero_one_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="concat_same",])
+# 
+# ## single vs concat
+# # t.test(accuracy~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="multi",])
+# t.test(hamming_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="multi",])
+# t.test(zero_one_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="multi",])
+# 
+# ## multi cs concat
+# # t.test(accuracy~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="single_same",])
+# t.test(hamming_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="single_same",])
+# t.test(zero_one_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="single_same",])
 
 
 df.comb.plot = df.comb %>% 
@@ -87,7 +87,7 @@ zer_plot <- ggplot(df.comb.plot) +
     legend.title = element_text(size = 16)
   ) +
   labs(x = "", y = "Zero-one-loss") +
-  scale_x_discrete(labels = c("Concat.-multi-label", "Multi-label", "Single-label"))
+  scale_x_discrete(labels = c("Multi-label", "Single-label (five boxes)", "Single-label (ten boxes)", "Single-label (three boxes)"))
 
 acc_plot <- ggplot(df.comb.plot) +
   geom_bar(aes(x=cond, y=acc_m), stat="identity", fill="gray", alpha=0.7) + # Adjust alpha here
@@ -107,7 +107,7 @@ acc_plot <- ggplot(df.comb.plot) +
     legend.title = element_text(size = 16)
   ) +
   labs(x = "", y = "Accuracy") + 
-  scale_x_discrete(labels = c("Concat.-multi-label", "Multi-label", "Single-label"))
+  scale_x_discrete(labels = c("Multi-label", "Single-label (five boxes)", "Single-label (ten boxes)", "Single-label (three boxes)"))
 
 ham_plot <- ggplot(df.comb.plot) +
   geom_bar(aes(x=cond, y=ham_m), stat="identity", fill="gray", alpha=0.7) + # Adjust alpha here
@@ -127,81 +127,18 @@ ham_plot <- ggplot(df.comb.plot) +
     legend.title = element_text(size = 16)
   ) +
   labs(x = "", y = "Hamming-loss") +
-  scale_x_discrete(labels = c("Concat.-multi-label", "Multi-label", "Single-label"))
-
-
-
-
-
-zer_plot_SM <- ggplot(df.comb.plot[df.comb.plot$cond!="concat_same",]) +
-  geom_bar(aes(x=cond, y=zer_m), stat="identity", fill="gray", alpha=0.7) + # Adjust alpha here
-  geom_errorbar(aes(x=cond, ymin=zer_m-zer_se, ymax=zer_m+zer_se), width=.5, alpha=1, size=.5) +
-  theme_minimal() +
-  theme(
-    panel.background = element_rect(fill = "white"),
-    axis.text = element_text(color = "black"),
-    axis.title = element_text(color = "black"),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.text.y = element_text(size = 14), 
-    axis.text.x = element_text(size = 14, angle = 45, hjust = 1), # Adjust the y-axis font size
-    axis.title.x = element_text(size = 16),      # Adjust the x-axis label font size
-    legend.text = element_text(size = 14),       # Adjust the legend font size
-    axis.title.y = element_text(size = 16),      # Adjust the y-axis label font size
-    legend.title = element_text(size = 16)
-  ) +
-  labs(x = "", y = "Zero-one-loss") +
-  scale_x_discrete(labels = c("Multi-label", "Single-label"))
-
-acc_plot_SM <- ggplot(df.comb.plot[df.comb.plot$cond!="concat_same",]) +
-  geom_bar(aes(x=cond, y=acc_m), stat="identity", fill="gray", alpha=0.7) + # Adjust alpha here
-  geom_errorbar(aes(x=cond, ymin=acc_m-acc_se, ymax=acc_m+acc_se), width=.5, alpha=1, size=.5) +
-  theme_minimal() +
-  theme(
-    panel.background = element_rect(fill = "white"),
-    axis.text = element_text(color = "black"),
-    axis.title = element_text(color = "black"),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.text.y = element_text(size = 14), 
-    axis.text.x = element_text(size = 14, angle = 45, hjust = 1), # Adjust the y-axis font size
-    axis.title.x = element_text(size = 16),      # Adjust the x-axis label font size
-    legend.text = element_text(size = 14),       # Adjust the legend font size
-    axis.title.y = element_text(size = 16),      # Adjust the y-axis label font size
-    legend.title = element_text(size = 16)
-  ) +
-  labs(x = "", y = "Accuracy") + 
-  scale_x_discrete(labels = c("Multi-label", "Single-label"))
-
-ham_plot_SM <- ggplot(df.comb.plot[df.comb.plot$cond!="concat_same",]) +
-  geom_bar(aes(x=cond, y=ham_m), stat="identity", fill="gray", alpha=0.7) + # Adjust alpha here
-  geom_errorbar(aes(x=cond, ymin=ham_m-ham_se, ymax=ham_m+ham_se), width=.5, alpha=1, size=.5) +
-  theme_minimal() +
-  theme(
-    panel.background = element_rect(fill = "white"),
-    axis.text = element_text(color = "black"),
-    axis.title = element_text(color = "black"),
-    panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(),
-    axis.text.y = element_text(size = 14), 
-    axis.text.x = element_text(size = 14, angle = 45, hjust = 1), # Adjust the y-axis font size
-    axis.title.x = element_text(size = 16),      # Adjust the x-axis label font size
-    legend.text = element_text(size = 14),       # Adjust the legend font size
-    axis.title.y = element_text(size = 16),      # Adjust the y-axis label font size
-    legend.title = element_text(size = 16)
-  ) +
-  labs(x = "", y = "Hamming-loss") +
-  scale_x_discrete(labels = c("Multi-label", "Single-label"))
-
-
-
-
-
+  scale_x_discrete(labels = c("Multi-label", "Single-label (five boxes)", "Single-label (ten boxes)", "Single-label (three boxes)"))
 
 library(gridExtra)
 combined_plot_two <- grid.arrange(ham_plot, zer_plot, ncol = 2)
-# combined_plot <- grid.arrange(acc_plot, ham_plot, zer_plot, ncol = 3)
-combined_plot_SM <- grid.arrange(ham_plot_SM, zer_plot_SM, ncol = 2)
+
+hist(single_three$zero_one_loss)
+hist(single_five$zero_one_loss)
+hist(single_ten$zero_one_loss)
+
+hist(single_three$hamming_loss)
+hist(single_five$hamming_loss)
+hist(single_ten$hamming_loss)
 
 ggsave("~/bwSyncShare/Multilabel open q/results/3_combined_plot_two.eps", combined_plot_two, device = cairo_ps, width = 10, height = 6)
 # ggsave("~/bwSyncShare/Multilabel open q/results/3_combined_plot.eps", combined_plot, device = cairo_ps, width = 10, height = 6)
