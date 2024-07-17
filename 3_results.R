@@ -2,18 +2,31 @@ library(tidyverse)
 # single_results <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_single.csv")
 multi_results <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_multi.csv")
 # multi_concat_results <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_concat.csv")
-multi_concat_samesize <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_concat_samesize.csv")
-single_results_samesize <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_single_samesize.csv")
+# multi_concat_samesize <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_concat_samesize.csv")
+# single_results_samesize <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_single_samesize.csv")
+single_three <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_single_samesize - three box.csv")
+single_five <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_single_samesize - five box.csv")
+single_ten <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_single_samesize - ten box.csv")
 
-single_results_samesize %>%
+# single_results_samesize %>%
+#   summarise(across(accuracy:hamming_loss, list(mean=mean, sd=sd, median=median), na.rm=TRUE))
+# single_results_samesize <- single_results_samesize %>% 
+#   mutate(cond = "single_same")
+
+single_three %>%
   summarise(across(accuracy:hamming_loss, list(mean=mean, sd=sd, median=median), na.rm=TRUE))
-single_results_samesize <- single_results_samesize %>% 
-  mutate(cond = "single_same")
+single_three <- single_three %>% 
+  mutate(cond = "single_three")
 
-# single_results %>%
-  # summarise(across(accuracy:hamming_loss, list(mean=mean, sd=sd, median=median), na.rm=TRUE))
-# single_results <- single_results %>% 
-#   mutate(cond = "single")
+single_five %>%
+  summarise(across(accuracy:hamming_loss, list(mean=mean, sd=sd, median=median), na.rm=TRUE))
+single_five <- single_five %>% 
+  mutate(cond = "single_five")
+
+single_ten %>%
+  summarise(across(accuracy:hamming_loss, list(mean=mean, sd=sd, median=median), na.rm=TRUE))
+single_ten <- single_ten %>% 
+  mutate(cond = "single_ten")
 
 multi_results <- multi_results %>% 
   filter(split_index<100) %>% ## first 100 observations, index starts at 0
@@ -21,19 +34,14 @@ multi_results <- multi_results %>%
 multi_results %>%
   summarise(across(accuracy:hamming_loss, list(mean=mean, sd=sd, median=median), na.rm=TRUE))
 
-# multi_concat_results <- multi_concat_results %>% 
-#   mutate(cond = "concat")
-# multi_concat_results %>%
+# multi_concat_samesize <- multi_concat_samesize %>% 
+#   mutate(cond = "concat_same")
+# multi_concat_samesize %>%
 #   summarise(across(accuracy:hamming_loss, list(mean=mean, sd=sd, median=median), na.rm=TRUE))
 
-multi_concat_samesize <- multi_concat_samesize %>% 
-  mutate(cond = "concat_same")
-multi_concat_samesize %>%
-  summarise(across(accuracy:hamming_loss, list(mean=mean, sd=sd, median=median), na.rm=TRUE))
 
 
-
-df.comb <- rbind(single_results_samesize, multi_results, multi_concat_samesize)
+df.comb <- rbind(single_ten, single_three, single_five, multi_results)
 
 ## single vs multi
 # t.test(accuracy~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="concat_same",])
