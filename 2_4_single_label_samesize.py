@@ -1,6 +1,3 @@
-
-
-
 # -*- coding: utf-8 -*-
 
 
@@ -9,13 +6,15 @@
 from sklearn.model_selection import train_test_split
 import numpy as np
 import pandas as pd
+from simpletransformers.classification import ClassificationModel, ClassificationArgs
+from sklearn.metrics import f1_score, precision_score, recall_score, roc_auc_score, accuracy_score
 
 
 import torch
 cuda_available = torch.cuda.is_available()
 cuda_available
-from simpletransformers.classification import ClassificationModel, ClassificationArgs
-from sklearn.metrics import f1_score, precision_score, recall_score, roc_auc_score, accuracy_score
+
+
 
 def f1_multiclass(labels, preds):
     return f1_score(labels, preds, average='micro')
@@ -48,6 +47,10 @@ def hamming_loss_new(y_true, y_pred):
 
 # Commented out IPython magic to ensure Python compatibility.
 df = pd.read_csv(r'C:\Users\rbach\Documents\multilabel_ruben\data\all_single.csv')
+
+### select appropriate observations here
+df = df[df['exp_cond'] == 'ten box']
+print(df.shape)
 df = df[['text', 'new_label_1', "lfdn"]]
 df['label'] = pd.factorize(df['new_label_1'])[0]
 df = df.drop(columns=['new_label_1'])
@@ -92,21 +95,28 @@ p_lr = [1e-3, 1e-4, 1e-5]
 # Empty lists to store test results for all splits (best model only)
 test_perf = []
 
-# select 553 people from single label dataset
-unique_ids = df['lfdn'].unique()
 
+# select 553 people from single label dataset and then all of their labels
+# unique_ids = df['lfdn'].unique()
+# np.random.seed(26)
+# sampled_ids = np.random.choice(unique_ids, size=553, replace=False)
+# sampled_df = df[df['lfdn'].isin(sampled_ids)]
+
+# now the BERT loop
 for split_index in range(100):
-    np.random.seed(split_index)
-    sampled_ids = np.random.choice(unique_ids, size=553, replace=False)
-    sampled_df = df[df['lfdn'].isin(sampled_ids)]
-    train_df, temp_df = train_test_split(sampled_df, test_size=0.4, random_state=split_index, stratify=sampled_df['label'])
+#    unique_persons = sampled_df['lfdn'].unique()
+#    train_ids, temp_ids = train_test_split(unique_persons, test_size=0.4, random_state=split_index)
+#    val_ids, test_ids = train_test_split(temp_ids, test_size=0.5, random_state=split_index)
+#    train_df = sampled_df[sampled_df['lfdn'].isin(train_ids)]
+#    test_df = sampled_df[sampled_df['lfdn'].isin(test_ids)]
+#    val_df = sampled_df[sampled_df['lfdn'].isin(val_ids)]
 
+    train_df, temp_df = train_test_split(df, test_size=0.4, random_state=split_index)
+    val_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=split_index)
 
-    # Split the temporary data into validation and test
-    val_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=split_index, stratify=temp_df['label'])
-
+    
     validation_results = []
-
+    val_df.head()
     # Initialize variables to store optimal hyperparameters
     best_lr = None
     best_epochs = None
@@ -200,9 +210,9 @@ for split_index in range(100):
     })
     # At end of each split, write test results to a CSV file
     test_results_df = pd.DataFrame(test_perf)
-    test_results_df.to_csv(r"C:\Users\rbach\Documents\multilabel_ruben\results\test_results_single_samesize.csv", index=False)
+    test_results_df.to_csv(r"C:\downloads\ruben_results\test_results_single_samesize - ten box.csv", index=False)
 
 
 # At end, write test results to a CSV file
 test_results_df = pd.DataFrame(test_perf)
-test_results_df.to_csv(r"C:\Users\rbach\Documents\multilabel_ruben\results\test_results_single_samesize.csv", index=False)
+test_results_df.to_csv(r"C:\downloads\ruben_results\test_results_single_samesize - ten box.csv", index=False)

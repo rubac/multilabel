@@ -5,6 +5,9 @@
 # !pip install scikit-learn
 # !pip install torch
 
+#### NOT A FAIR COMPARISON TO MULTILABEL DATA WHICH IS 1/3 OF SIZE OF DATA USED HERE
+
+
 import pandas as pd
 import numpy as np
 import ast

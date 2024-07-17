@@ -5,6 +5,10 @@
 # !pip install scikit-learn
 # !pip install torch
 
+#### needs to be run again with appropriate data (i.e., 3box, 5box 10box)
+
+
+
 import pandas as pd
 import numpy as np
 import ast
@@ -77,6 +81,9 @@ def av_labels_correct(labels, preds):
     return accuracy_score(labels, np.round(preds))
 
 df = pd.read_csv(r'C:\Users\rbach\Documents\multilabel_ruben\data\all_concat.csv')
+df = df[df['exp_cond'] == 'ten box']
+df = df.drop(columns=['exp_cond'])
+
 selected_columns = df.iloc[:, 2:12]
 
 labels = selected_columns.values.tolist()
@@ -97,9 +104,6 @@ train_args=MultiLabelClassificationArgs(
     overwrite_output_dir= True
     )
 
-# p_epochs= [1,2] for testing
-# p_lr = [1e-3, 1e-4] for testing
-
 p_epochs= [5, 10, 15]
 
 p_lr = [1e-3, 1e-4, 1e-5]
@@ -107,12 +111,10 @@ p_lr = [1e-3, 1e-4, 1e-5]
 # Empty lists to store test results for all splits (best model only)
 test_perf = []
 
-# 2 random splits and run the experiment --- increase when running experiment for real
-# for split_index in range(2):   for testing
 for split_index in range(100):
-    df = df.sample(n=553, random_state=split_index)
     # Create a new random split of the data
-    train_df, val_df, test_df = np.split(df.sample(frac=1, random_state=split_index), [int(.6*len(df)), int(.8*len(df))])
+    train_df, temp_df = train_test_split(df, test_size=0.4, random_state=split_index)
+    val_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=split_index)
     validation_results = []
 
     # Initialize variables to store optimal hyperparameters
@@ -174,9 +176,9 @@ for split_index in range(100):
     
     # At end of each split, write test results to a CSV file
     test_results_df = pd.DataFrame(test_perf)
-    test_results_df.to_csv(r"C:\Users\rbach\Documents\multilabel_ruben\results\test_results_concat_samesize.csv", index=False)
+    test_results_df.to_csv(r"C:\Users\rbach\Documents\multilabel_ruben\results\test_results_concat_tenbox.csv", index=False)
 
 # Final write to ensure all results are saved
 test_results_df = pd.DataFrame(test_perf)
-test_results_df.to_csv(r"C:\Users\rbach\Documents\multilabel_ruben\results\test_results_concat_samesize.csv", index=False)
+test_results_df.to_csv(r"C:\Users\rbach\Documents\multilabel_ruben\results\test_results_concat_tenbox.csv", index=False)
 

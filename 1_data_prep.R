@@ -1213,7 +1213,7 @@ names(df_onebox)
 
 df_concat2 <- select(df_concat2, lfdn, text, rest, nonresponse, time_references, life_event,
                     politics_security_society, life_situation_living_conditions, 
-                    financial_situation, job, health, social_network_surrounding)
+                    financial_situation, job, health, social_network_surrounding, exp_cond)
 names(df_concat2)
 
 write_csv(df_concat2, "~/bwSyncShare/Multilabel open q/data/all_concat.csv")

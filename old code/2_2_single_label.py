@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+#### NOT A FAIR COMPARISON TO MULTILABEL DATA WHICH IS 1/3 OF SIZE OF DATA USED HERE
 
 # !pip install simpletransformers
 # !pip freeze | grep simpletransformers

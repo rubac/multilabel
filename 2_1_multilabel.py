@@ -109,11 +109,10 @@ p_lr = [1e-3, 1e-4, 1e-5]
 # Empty lists to store test results for all splits (best model only)
 test_perf = []
 
-# 2 random splits and run the experiment --- increase when running experiment for real
-# for split_index in range(2):   for testing
 for split_index in range(100):
     # Create a new random split of the data
-    train_df, val_df, test_df = np.split(df.sample(frac=1, random_state=split_index), [int(.6*len(df)), int(.8*len(df))])
+    train_df, temp_df = train_test_split(df, test_size=0.4, random_state=split_index)
+    val_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=split_index)
     validation_results = []
 
     # Initialize variables to store optimal hyperparameters
