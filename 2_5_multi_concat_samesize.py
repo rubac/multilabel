@@ -20,31 +20,37 @@ def convert_to_int(lst):
     return [int(x) for x in lst]
 def replace_with_1(x):
     return 1 if x != 0 else x
-def acc_zero_one_loss(y_true, y_pred):
-    if isinstance(y_true, pd.DataFrame):
-        y_true = np.array(y_true['labels'].tolist())
-    if isinstance(y_pred, pd.DataFrame):
-        y_pred = np.array(y_pred['labels'].tolist())
-    nsample = len(y_true)
-    row_indicators = np.logical_not(np.all(y_true == y_pred, axis=1))
-    not_equal_count = np.sum(row_indicators)
-    return 1 - (not_equal_count / nsample)
-def zero_one_loss(y_true, y_pred):
-    if isinstance(y_true, pd.DataFrame):
-        y_true = np.array(y_true['labels'].tolist())
-    if isinstance(y_pred, pd.DataFrame):
-        y_pred = np.array(y_pred['labels'].tolist())
-    nsample = len(y_true)
-    row_indicators = np.logical_not(np.all(y_true == y_pred, axis=1))
-    not_equal_count = np.sum(row_indicators)
-    return not_equal_count / nsample
+def av_labels_correct(labels, preds):
+    return accuracy_score(labels, np.round(preds))
+# def acc_zero_one_loss(y_true, y_pred):
+#     if isinstance(y_true, pd.DataFrame):
+#        y_true = np.array(y_true['labels'].tolist())
+#     if isinstance(y_pred, pd.DataFrame):
+#         y_pred = np.array(y_pred['labels'].tolist())
+#     nsample = len(y_true)
+#     row_indicators = np.logical_not(np.all(y_true == y_pred, axis=1))
+#     not_equal_count = np.sum(row_indicators)
+#     return 1 - (not_equal_count / nsample)
+def zero_one_loss(labels, preds):
+    return 1- accuracy_score(labels, np.round(preds))
+
+# def zero_one_loss(y_true, y_pred):
+#     if isinstance(y_true, pd.DataFrame):
+#         y_true = np.array(y_true['labels'].tolist())
+#     if isinstance(y_pred, pd.DataFrame):
+#         y_pred = np.array(y_pred['labels'].tolist())
+#     nsample = len(y_true)
+#     row_indicators = np.logical_not(np.all(y_true == y_pred, axis=1))
+#     not_equal_count = np.sum(row_indicators)
+#     return not_equal_count / nsample
 def hamming_loss(y_true, y_pred):
     hl_num = np.sum(np.logical_xor(y_true, y_pred))
     hl_den = y_true.size  # total n = #rows * #cols
     return hl_num / hl_den
 
+# Commented out IPython magic to ensure Python compatibility.
 df = pd.read_csv(r'C:\Users\rbach\Documents\multilabel_ruben\data\all_concat.csv')
-
+df.head()
 
 df = df[df['exp_cond'] == 'ten box']
 df = df.drop(columns=['exp_cond'])
@@ -104,15 +110,16 @@ for split_index in range(100):
             model.train_model(train_df)
 
             # Evaluate the model on the validation set
-            val_result, val_model_outputs, val_wrong_predictions = model.eval_model(val_df, zero_one_loss=zero_one_loss, hamming_loss=hamming_loss, av_acc=acc_zero_one_loss)
+            val_result, val_model_outputs, val_wrong_predictions = model.eval_model(val_df, zero_one_loss=zero_one_loss, hamming_loss=hamming_loss, av_acc=av_labels_correct)
             av_acc_new = val_result["av_acc"]
+            print(av_acc_new)
             # Check if this combination is better than the previous best
             # We evaluate on average accuracy, which is no different from zero one loss (av_acc = 1 - zero_one_loss))
             if av_acc_new > best_val_acc:
                 best_val_acc = av_acc_new
                 best_lr = lr
                 best_epochs = epochs
-
+            print(best_val_acc)
     # Train a new model with the best hyperparameters on the full training data
     train_args.learning_rate = best_lr
     train_args.num_train_epochs = best_epochs
