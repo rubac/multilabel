@@ -14,6 +14,13 @@ import torch
 cuda_available = torch.cuda.is_available()
 cuda_available
 
+import datetime
+
+# add date and time to name of csv to avoid overwriting csvs
+now = datetime.datetime.now()
+timestamp = now.strftime("%Y%m%d_%H%M%S")
+filename = f"C:\\downloads\\ruben_results\\test_results_concat_fivebox_{timestamp}.csv"
+
 def f1_multiclass(labels, preds):
     return f1_score(labels, preds, average='micro')
 def convert_to_int(lst):
@@ -44,15 +51,15 @@ def zero_one_loss(labels, preds):
 #     not_equal_count = np.sum(row_indicators)
 #     return not_equal_count / nsample
 def hamming_loss(y_true, y_pred):
+    y_true = np.array(y_true)
+    y_pred = np.array(y_pred)
     hl_num = np.sum(np.logical_xor(y_true, y_pred))
     hl_den = y_true.size  # total n = #rows * #cols
     return hl_num / hl_den
-
-# Commented out IPython magic to ensure Python compatibility.
 df = pd.read_csv(r'C:\Users\rbach\Documents\multilabel_ruben\data\all_concat.csv')
 df.head()
 
-df = df[df['exp_cond'] == 'ten box']
+df = df[df['exp_cond'] == 'five box']
 df = df.drop(columns=['exp_cond'])
 
 selected_columns = df.iloc[:, 2:12]
@@ -148,8 +155,8 @@ for split_index in range(100):
     
     # At end of each split, write test results to a CSV file
     test_results_df = pd.DataFrame(test_perf)
-    test_results_df.to_csv(r"C:\downloads\ruben_results\test_results_concat_tenbox.csv", index=False)
+    test_results_df.to_csv(filename, index=False)
 
 # Final write to ensure all results are saved
 test_results_df = pd.DataFrame(test_perf)
-test_results_df.to_csv(r"C:\downloads\ruben_results\test_results_concat_tenbox.csv", index=False)
+test_results_df.to_csv(filename, index=False)
