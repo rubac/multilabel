@@ -15,9 +15,9 @@ threeboxtestdf <- round(length(xxx$lfdn[xxx$exp_cond=="three box"])*0.2) # 0.2 i
 fiveboxtestdf <- round(length(xxx$lfdn[xxx$exp_cond=="five box"])*0.2) # 0.2 is size of test df
 tenboxtestdf <- round(length(xxx$lfdn[xxx$exp_cond=="ten box"])*0.2) # 0.2 is size of test df
 
-concat_three_summary$hamming_loss <- concat_three_summary$hamming_loss/threeboxtestdf
-concat_five_summary$hamming_loss <- concat_five_summary$hamming_loss/fiveboxtestdf
-concat_ten_summary$hamming_loss <- concat_ten_summary$hamming_loss/tenboxtestdf
+concat_three$hamming_loss <- concat_three$hamming_loss/threeboxtestdf
+concat_five$hamming_loss <- concat_five$hamming_loss/fiveboxtestdf
+concat_ten$hamming_loss <- concat_ten$hamming_loss/tenboxtestdf
 
 # Define a function that takes a dataset and its name, and performs the summarise and mutate operations
 summarize_and_add_cond <- function(df, name) {
@@ -27,7 +27,7 @@ summarize_and_add_cond <- function(df, name) {
 }
 
 # multi_summary <- summarize_and_add_cond(multi_results, "Multi label")
-single_sampled_summary <- summarize_and_add_cond(single_sample, "Single label, sampled")
+single_sampled_summary <- summarize_and_add_cond(single_sample, "Single label, random sample")
 single_three_summary <- summarize_and_add_cond(single_three, "Single label, three boxes")
 single_five_summary <- summarize_and_add_cond(single_five, "Single label, five boxes")
 single_ten_summary <- summarize_and_add_cond(single_ten, "Single label, ten boxes")
@@ -77,8 +77,8 @@ zer_plot <- ggplot(df.comb.plot) +
   labs(x = "", y = "Zero-one-loss") 
 
 
-+
-  scale_x_discrete(labels = c("Multi-label", "Single-label (five boxes)", "Single-label (ten boxes)", "Single-label (three boxes)"))
+#+
+#  scale_x_discrete(labels = c("Multi-label", "Single-label (five boxes)", "Single-label (ten boxes)", "Single-label (three boxes)"))
 
 acc_plot <- ggplot(df.comb.plot) +
   geom_bar(aes(x=cond, y=acc_m), stat="identity", fill="gray", alpha=0.7) + # Adjust alpha here
@@ -97,8 +97,10 @@ acc_plot <- ggplot(df.comb.plot) +
     axis.title.y = element_text(size = 16),      # Adjust the y-axis label font size
     legend.title = element_text(size = 16)
   ) +
-  labs(x = "", y = "Accuracy") + 
-  scale_x_discrete(labels = c("Multi-label", "Single-label (five boxes)", "Single-label (ten boxes)", "Single-label (three boxes)"))
+  labs(x = "", y = "Accuracy") 
+
+#+ 
+#  scale_x_discrete(labels = c("Multi-label", "Single-label (five boxes)", "Single-label (ten boxes)", "Single-label (three boxes)"))
 
 ham_plot <- ggplot(df.comb.plot) +
   geom_bar(aes(x=cond, y=ham_m), stat="identity", fill="gray", alpha=0.7) + # Adjust alpha here
@@ -119,8 +121,8 @@ ham_plot <- ggplot(df.comb.plot) +
   ) +
   labs(x = "", y = "Hamming-loss") 
 
-+
-  scale_x_discrete(labels = c("Multi-label", "Single-label (five boxes)", "Single-label (ten boxes)", "Single-label (three boxes)"))
+#+
+ # scale_x_discrete(labels = c("Multi-label", "Single-label (five boxes)", "Single-label (ten boxes)", "Single-label (three boxes)"))
 
 library(gridExtra)
 combined_plot_two <- grid.arrange(ham_plot, zer_plot, ncol = 2)
@@ -143,6 +145,6 @@ hist(concat_ten$hamming_loss)
 
 
 
-ggsave("~/bwSyncShare/Multilabel open q/results/3_combined_plot_two.eps", combined_plot_two, device = cairo_ps, width = 10, height = 6)
+#ggsave("~/bwSyncShare/Multilabel open q/results/3_combined_plot_two.eps", combined_plot_two, device = cairo_ps, width = 10, height = 6)
 # ggsave("~/bwSyncShare/Multilabel open q/results/3_combined_plot.eps", combined_plot, device = cairo_ps, width = 10, height = 6)
-ggsave("~/bwSyncShare/Multilabel open q/results/3_combined_plot_SM.eps", combined_plot_SM, device = cairo_ps, width = 10, height = 6)
+#ggsave("~/bwSyncShare/Multilabel open q/results/3_combined_plot_SM.eps", combined_plot_SM, device = cairo_ps, width = 10, height = 6)
