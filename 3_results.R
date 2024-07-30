@@ -1,62 +1,50 @@
 library(tidyverse)
-# single_results <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_single.csv")
-multi_results <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_multi.csv")
-# multi_concat_results <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_concat.csv")
-# multi_concat_samesize <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_concat_samesize.csv")
-# single_results_samesize <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_single_samesize.csv")
+# multi_results <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_multi.csv")
+single_sample <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_single_samesize - sample from 3-5-10.csv")
 single_three <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_single_samesize - three box.csv")
 single_five <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_single_samesize - five box.csv")
 single_ten <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_single_samesize - ten box.csv")
+concat_three <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_concat_threebox.csv")
+concat_five <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_concat_fivebox.csv")
+concat_ten <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_concat_tenbox.csv")
 
-# single_results_samesize %>%
-#   summarise(across(accuracy:hamming_loss, list(mean=mean, sd=sd, median=median), na.rm=TRUE))
-# single_results_samesize <- single_results_samesize %>% 
-#   mutate(cond = "single_same")
+## need to correct hamming loss for some as there was an error in the computation in the python script
+## need to divide by number of samples in test df
+xxx <- read_csv("~/bwSyncShare/Multilabel open q/data/all_concat.csv")
+threeboxtestdf <- round(length(xxx$lfdn[xxx$exp_cond=="three box"])*0.2) # 0.2 is size of test df
+fiveboxtestdf <- round(length(xxx$lfdn[xxx$exp_cond=="five box"])*0.2) # 0.2 is size of test df
+tenboxtestdf <- round(length(xxx$lfdn[xxx$exp_cond=="ten box"])*0.2) # 0.2 is size of test df
 
-single_three %>%
-  summarise(across(accuracy:hamming_loss, list(mean=mean, sd=sd, median=median), na.rm=TRUE))
-single_three <- single_three %>% 
-  mutate(cond = "single_three")
+concat_three_summary$hamming_loss <- concat_three_summary$hamming_loss/threeboxtestdf
+concat_five_summary$hamming_loss <- concat_five_summary$hamming_loss/fiveboxtestdf
+concat_ten_summary$hamming_loss <- concat_ten_summary$hamming_loss/tenboxtestdf
 
-single_five %>%
-  summarise(across(accuracy:hamming_loss, list(mean=mean, sd=sd, median=median), na.rm=TRUE))
-single_five <- single_five %>% 
-  mutate(cond = "single_five")
+# Define a function that takes a dataset and its name, and performs the summarise and mutate operations
+summarize_and_add_cond <- function(df, name) {
+  summarized_df <- df %>%
+    mutate(cond = name)
+  return(summarized_df)
+}
 
-single_ten %>%
-  summarise(across(accuracy:hamming_loss, list(mean=mean, sd=sd, median=median), na.rm=TRUE))
-single_ten <- single_ten %>% 
-  mutate(cond = "single_ten")
-
-multi_results <- multi_results %>% 
-  filter(split_index<100) %>% ## first 100 observations, index starts at 0
-  mutate(cond = "multi")
-multi_results %>%
-  summarise(across(accuracy:hamming_loss, list(mean=mean, sd=sd, median=median), na.rm=TRUE))
-
-# multi_concat_samesize <- multi_concat_samesize %>% 
-#   mutate(cond = "concat_same")
-# multi_concat_samesize %>%
-#   summarise(across(accuracy:hamming_loss, list(mean=mean, sd=sd, median=median), na.rm=TRUE))
-
+# multi_summary <- summarize_and_add_cond(multi_results, "Multi label")
+single_sampled_summary <- summarize_and_add_cond(single_sample, "Single label, sampled")
+single_three_summary <- summarize_and_add_cond(single_three, "Single label, three boxes")
+single_five_summary <- summarize_and_add_cond(single_five, "Single label, five boxes")
+single_ten_summary <- summarize_and_add_cond(single_ten, "Single label, ten boxes")
+concat_three_summary <- summarize_and_add_cond(concat_three, "Concat. multi label, three boxes")
+concat_five_summary <- summarize_and_add_cond(concat_five, "Concat. multi label, five boxes")
+concat_ten_summary <- summarize_and_add_cond(concat_ten, "Concat. multi label, ten boxes")
 
 
-df.comb <- rbind(single_ten, single_three, single_five, multi_results)
+df.comb <- rbind(single_sampled_summary,
+                 single_three_summary,
+                 single_five_summary,
+                 single_ten_summary,
+                 concat_three_summary,
+                 concat_five_summary,
+                 concat_ten_summary)
 
-# ## single vs multi
-# # t.test(accuracy~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="concat_same",])
-# t.test(hamming_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond=="concat_same",])
-# t.test(zero_one_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="concat_same",])
-# 
-# ## single vs concat
-# # t.test(accuracy~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="multi",])
-# t.test(hamming_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="multi",])
-# t.test(zero_one_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="multi",])
-# 
-# ## multi cs concat
-# # t.test(accuracy~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="single_same",])
-# t.test(hamming_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="single_same",])
-# t.test(zero_one_loss~cond, var.equal = F, alternative = "two.sided", data = df.comb[df.comb$cond!="single_same",])
+
 
 
 df.comb.plot = df.comb %>% 
@@ -86,7 +74,10 @@ zer_plot <- ggplot(df.comb.plot) +
     axis.title.y = element_text(size = 16),      # Adjust the y-axis label font size
     legend.title = element_text(size = 16)
   ) +
-  labs(x = "", y = "Zero-one-loss") +
+  labs(x = "", y = "Zero-one-loss") 
+
+
++
   scale_x_discrete(labels = c("Multi-label", "Single-label (five boxes)", "Single-label (ten boxes)", "Single-label (three boxes)"))
 
 acc_plot <- ggplot(df.comb.plot) +
@@ -126,7 +117,9 @@ ham_plot <- ggplot(df.comb.plot) +
     axis.title.y = element_text(size = 16),      # Adjust the y-axis label font size
     legend.title = element_text(size = 16)
   ) +
-  labs(x = "", y = "Hamming-loss") +
+  labs(x = "", y = "Hamming-loss") 
+
++
   scale_x_discrete(labels = c("Multi-label", "Single-label (five boxes)", "Single-label (ten boxes)", "Single-label (three boxes)"))
 
 library(gridExtra)
@@ -139,6 +132,16 @@ hist(single_ten$zero_one_loss)
 hist(single_three$hamming_loss)
 hist(single_five$hamming_loss)
 hist(single_ten$hamming_loss)
+
+hist(concat_three$zero_one_loss)
+hist(concat_five$zero_one_loss)
+hist(concat_ten$zero_one_loss)
+
+hist(concat_three$hamming_loss)
+hist(concat_five$hamming_loss)
+hist(concat_ten$hamming_loss)
+
+
 
 ggsave("~/bwSyncShare/Multilabel open q/results/3_combined_plot_two.eps", combined_plot_two, device = cairo_ps, width = 10, height = 6)
 # ggsave("~/bwSyncShare/Multilabel open q/results/3_combined_plot.eps", combined_plot, device = cairo_ps, width = 10, height = 6)
