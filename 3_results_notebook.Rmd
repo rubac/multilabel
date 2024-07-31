@@ -1,3 +1,16 @@
+---
+title: "results"
+author: "Ruben Bach"
+date: "2024-07-31"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r cars}
 library(tidyverse)
 multi_results <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_multi.csv")
 single_sample <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_single_sampled_3-5-10box.csv")
@@ -55,16 +68,16 @@ df.comb <- rbind(multi_summary,
 df.comb.plot = df.comb %>% 
   group_by(cond) %>% 
   summarise(acc_se = sd(accuracy) / sqrt(length(accuracy)),
-            zer_se = sd(zero_one_loss) / sqrt(length(zero_one_loss)),
-            ham_se = sd(hamming_loss) / sqrt(length(hamming_loss)),
-            acc_m = mean(accuracy),
-            zer_m = mean(zero_one_loss),
-            ham_m = mean(hamming_loss))
+        zer_se = sd(zero_one_loss) / sqrt(length(zero_one_loss)),
+        ham_se = sd(hamming_loss) / sqrt(length(hamming_loss)),
+        acc_m = mean(accuracy),
+        zer_m = mean(zero_one_loss),
+        ham_m = mean(hamming_loss))
 
 df.comb2 <- rbind(multi_summary,
-                  concat_three_summary,
-                  concat_five_summary,
-                  concat_ten_summary)
+                 concat_three_summary,
+                 concat_five_summary,
+                 concat_ten_summary)
 
 
 
@@ -72,11 +85,11 @@ df.comb2 <- rbind(multi_summary,
 df.comb.plot2 = df.comb2 %>% 
   group_by(cond) %>% 
   summarise(acc_se = sd(accuracy) / sqrt(length(accuracy)),
-            zer_se = sd(zero_one_loss) / sqrt(length(zero_one_loss)),
-            ham_se = sd(hamming_loss) / sqrt(length(hamming_loss)),
-            acc_m = mean(accuracy),
-            zer_m = mean(zero_one_loss),
-            ham_m = mean(hamming_loss))
+        zer_se = sd(zero_one_loss) / sqrt(length(zero_one_loss)),
+        ham_se = sd(hamming_loss) / sqrt(length(hamming_loss)),
+        acc_m = mean(accuracy),
+        zer_m = mean(zero_one_loss),
+        ham_m = mean(hamming_loss))
 
 
 zer_plot <- ggplot(df.comb.plot) +
@@ -203,3 +216,5 @@ hist(concat_ten$hamming_loss)
 #ggsave("~/bwSyncShare/Multilabel open q/results/3_combined_plot_two.eps", combined_plot_two, device = cairo_ps, width = 10, height = 6)
 # ggsave("~/bwSyncShare/Multilabel open q/results/3_combined_plot.eps", combined_plot, device = cairo_ps, width = 10, height = 6)
 #ggsave("~/bwSyncShare/Multilabel open q/results/3_combined_plot_SM.eps", combined_plot_SM, device = cairo_ps, width = 10, height = 6)
+
+```
