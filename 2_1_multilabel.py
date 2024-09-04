@@ -18,6 +18,14 @@ from sklearn.model_selection import train_test_split
 import torch
 cuda_available = torch.cuda.is_available()
 
+import datetime
+
+# add date and time to name of csv to avoid overwriting csvs
+now = datetime.datetime.now()
+timestamp = now.strftime("%Y%m%d_%H%M%S")
+filename = f"C:\\downloads\\ruben_results\\test_results_multi_{timestamp}.csv"
+
+
 # Multi-label metrics
 # input: np arrays: y_true contains dummies, prob contains probabilities (or already 1 / 0 labels)
 
@@ -174,8 +182,8 @@ for split_index in range(100):
     
     # At end of each split, write test results to a CSV file
     test_results_df = pd.DataFrame(test_perf)
-    test_results_df.to_csv(r"C:\Users\rbach\Documents\multilabel_ruben\results\test_results_multi.csv", index=False)
+    test_results_df.to_csv(filename, index=False)
 
 # Final write to ensure all results are saved
 test_results_df = pd.DataFrame(test_perf)
-test_results_df.to_csv(r"C:\Users\rbach\Documents\multilabel_ruben\results\test_results_multi.csv", index=False)
+test_results_df.to_csv(filename, index=False)
