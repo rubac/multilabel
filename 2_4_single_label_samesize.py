@@ -14,7 +14,12 @@ import torch
 cuda_available = torch.cuda.is_available()
 cuda_available
 
+import datetime
 
+# add date and time to name of csv to avoid overwriting csvs
+now = datetime.datetime.now()
+timestamp = now.strftime("%Y%m%d_%H%M%S")
+filename = f"C:\\downloads\\ruben_results\\test_results_single_samesize - ten box{timestamp}.csv"
 
 def f1_multiclass(labels, preds):
     return f1_score(labels, preds, average='micro')
@@ -210,9 +215,8 @@ for split_index in range(100):
     })
     # At end of each split, write test results to a CSV file
     test_results_df = pd.DataFrame(test_perf)
-    test_results_df.to_csv(r"C:\downloads\ruben_results\test_results_single_samesize - ten box.csv", index=False)
+    test_results_df.to_csv(filename, index=False)
 
-
-# At end, write test results to a CSV file
+# Final write to ensure all results are saved
 test_results_df = pd.DataFrame(test_perf)
-test_results_df.to_csv(r"C:\downloads\ruben_results\test_results_single_samesize - ten box.csv", index=False)
+test_results_df.to_csv(filename, index=False)
