@@ -1239,3 +1239,30 @@ table(row_sums <- rowSums(df_onebox[c("social_network_surrounding", "rest", "non
 
 
 table(df_single$new_label_1)
+
+
+###transform multilabel to single label data 
+### this was done manually
+## we now need to make some adjustments to the resulting data
+
+multi_to_single <- read_csv2(file = "~/bwSyncShare/Multilabel open q/data/onebox_to_single.csv")
+multi_to_single_1 <- multi_to_single %>%
+  pivot_longer(
+    cols = starts_with("label_"),
+    names_to = c(".value", "num"),
+    names_pattern = "(label)_(\\d+)") %>% 
+  filter(!is.na(num)) %>% 
+  filter(!is.na(label)) %>% 
+  select(-starts_with("text") )
+multi_to_single_2 <- multi_to_single %>%
+  pivot_longer(
+    cols = starts_with("text_"),
+    names_to = c(".value", "num"),
+    names_pattern = "(text)_(\\d+)") %>% 
+  filter(!is.na(num)) %>% 
+  filter(!is.na(text)) %>% 
+  select(-starts_with("label") )
+
+multi_to_single <- merge(multi_to_single_1, multi_to_single_2, by = c("lfdn", "num"), all = TRUE)
+multi_to_single <- multi_to_single %>% 
+  select(-num)
