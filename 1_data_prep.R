@@ -1266,3 +1266,4 @@ multi_to_single_2 <- multi_to_single %>%
 multi_to_single <- merge(multi_to_single_1, multi_to_single_2, by = c("lfdn", "num"), all = TRUE)
 multi_to_single <- multi_to_single %>% 
   select(-num)
+write_csv(multi_to_single, "~/bwSyncShare/Multilabel open q/data/multi_to_single_final.csv")
