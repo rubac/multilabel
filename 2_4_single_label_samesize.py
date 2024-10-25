@@ -101,7 +101,7 @@ p_lr = [1e-3, 1e-4, 1e-5]
 test_perf = []
 
 
-select 553 people from single label dataset and then all of their labels
+# select 553 people from single label dataset and then all of their labels
 unique_ids = df['lfdn'].unique()
 np.random.seed(26)
 sampled_ids = np.random.choice(unique_ids, size=553, replace=False)
