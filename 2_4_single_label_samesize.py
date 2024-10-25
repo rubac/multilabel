@@ -19,7 +19,7 @@ import datetime
 # add date and time to name of csv to avoid overwriting csvs
 now = datetime.datetime.now()
 timestamp = now.strftime("%Y%m%d_%H%M%S")
-filename = f"C:\\downloads\\ruben_results\\test_results_single_samesize - ten box_{timestamp}.csv"
+filename = f"C:\\downloads\\ruben_results\\test_results_single_samesize_{timestamp}.csv"
 
 def f1_multiclass(labels, preds):
     return f1_score(labels, preds, average='micro')
