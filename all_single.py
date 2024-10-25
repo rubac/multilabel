@@ -92,20 +92,12 @@ train_args = ClassificationArgs(
     use_multiprocessing=True,
     labels_list=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 )
-# p_epochs= [1, 2] # for testing
-# p_lr = [1e-3, 1e-4] # for testing
 
 p_epochs= [5, 10, 15]
 p_lr = [1e-3, 1e-4, 1e-5]
 # Empty lists to store test results for all splits (best model only)
 test_perf = []
 
-
-# select 553 people from single label dataset and then all of their labels
-# unique_ids = df['lfdn'].unique()
-# np.random.seed(26)
-# sampled_ids = np.random.choice(unique_ids, size=553, replace=False)
-# sampled_df = df[df['lfdn'].isin(sampled_ids)]
 
 # now the BERT loop ### for all single label cases, we need to sample persons and not observations
 for split_index in range(100):
