@@ -101,23 +101,23 @@ p_lr = [1e-3, 1e-4, 1e-5]
 test_perf = []
 
 
-# select 553 people from single label dataset and then all of their labels
-# unique_ids = df['lfdn'].unique()
-# np.random.seed(26)
-# sampled_ids = np.random.choice(unique_ids, size=553, replace=False)
-# sampled_df = df[df['lfdn'].isin(sampled_ids)]
+select 553 people from single label dataset and then all of their labels
+unique_ids = df['lfdn'].unique()
+np.random.seed(26)
+sampled_ids = np.random.choice(unique_ids, size=553, replace=False)
+sampled_df = df[df['lfdn'].isin(sampled_ids)]
 
 # now the BERT loop
 for split_index in range(100):
-#    unique_persons = sampled_df['lfdn'].unique()
-#    train_ids, temp_ids = train_test_split(unique_persons, test_size=0.4, random_state=split_index)
-#    val_ids, test_ids = train_test_split(temp_ids, test_size=0.5, random_state=split_index)
-#    train_df = sampled_df[sampled_df['lfdn'].isin(train_ids)]
-#    test_df = sampled_df[sampled_df['lfdn'].isin(test_ids)]
-#    val_df = sampled_df[sampled_df['lfdn'].isin(val_ids)]
+    unique_persons = sampled_df['lfdn'].unique()
+    train_ids, temp_ids = train_test_split(unique_persons, test_size=0.4, random_state=split_index)
+    val_ids, test_ids = train_test_split(temp_ids, test_size=0.5, random_state=split_index)
+    train_df = sampled_df[sampled_df['lfdn'].isin(train_ids)]
+    test_df = sampled_df[sampled_df['lfdn'].isin(test_ids)]
+    val_df = sampled_df[sampled_df['lfdn'].isin(val_ids)]
 
-    train_df, temp_df = train_test_split(df, test_size=0.4, random_state=split_index)
-    val_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=split_index)
+    # train_df, temp_df = train_test_split(df, test_size=0.4, random_state=split_index)
+    # val_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=split_index)
 
     
     validation_results = []
