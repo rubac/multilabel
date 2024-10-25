@@ -19,7 +19,7 @@ import datetime
 # add date and time to name of csv to avoid overwriting csvs
 now = datetime.datetime.now()
 timestamp = now.strftime("%Y%m%d_%H%M%S")
-filename = f"C:\\downloads\\ruben_results\\test_results_concat_fivebox_{timestamp}.csv"
+filename = f"C:\\downloads\\ruben_results\\test_results_concat_samesize_{timestamp}.csv"
 
 def f1_multiclass(labels, preds):
     return f1_score(labels, preds, average='micro')
@@ -59,7 +59,7 @@ def hamming_loss(y_true, y_pred):
 df = pd.read_csv(r'C:\Users\rbach\Documents\multilabel_ruben\data\all_concat.csv')
 df.head()
 
-df = df[df['exp_cond'] == 'five box']
+# df = df[df['exp_cond'] == 'five box']
 df = df.drop(columns=['exp_cond'])
 
 selected_columns = df.iloc[:, 2:12]
@@ -89,9 +89,12 @@ p_lr = [1e-3, 1e-4, 1e-5]
 # Empty lists to store test results for all splits (best model only)
 test_perf = []
 
+### select random n=553 participants
+sampled_df = np.random.choice(df, size=553, replace=False)
+
 for split_index in range(100):
     # Create a new random split of the data
-    train_df, temp_df = train_test_split(df, test_size=0.4, random_state=split_index)
+    train_df, temp_df = train_test_split(sampled_df, test_size=0.4, random_state=split_index)
     val_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=split_index)
     validation_results = []
 
