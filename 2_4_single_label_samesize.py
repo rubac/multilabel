@@ -54,7 +54,7 @@ def hamming_loss_new(y_true, y_pred):
 df = pd.read_csv(r'C:\Users\rbach\Documents\multilabel_ruben\data\all_single.csv')
 
 ### select appropriate observations here
-df = df[df['exp_cond'] == 'ten box']
+# df = df[df['exp_cond'] == 'ten box']
 print(df.shape)
 df = df[['text', 'new_label_1', "lfdn"]]
 df['label'] = pd.factorize(df['new_label_1'])[0]
