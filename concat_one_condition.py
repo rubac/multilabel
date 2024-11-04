@@ -91,7 +91,7 @@ test_perf = []
 
 for split_index in range(100):
     # Create a new random split of the data
-    train_df, temp_df = train_test_split(sampled_df, test_size=0.4, random_state=split_index)
+    train_df, temp_df = train_test_split(df, test_size=0.4, random_state=split_index)
     val_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=split_index)
     validation_results = []
 
