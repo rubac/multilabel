@@ -1,6 +1,126 @@
 library(tidyverse)
 multi_results <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_multi.csv")
 multi_to_single <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_multi_to_single.csv")
+single_sample <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_single_sampled_3-5-10box.csv")
+concat_sample <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_concat_sample.csv")
+
+## need to correct hamming loss for some as there was an error in the computation in the python script
+## need to divide by number of samples in test df
+concat_sample$hamming_loss <- concat_sample$hamming_loss / round(553*0.2) # 0.2 is size of test df
+multi_results$hamming_loss <- multi_results$hamming_loss/round(553*0.2)
+
+# Define a function that takes a dataset and its name, and performs the summarise and mutate operations
+summarize_and_add_cond <- function(df, name) {
+  summarized_df <- df %>%
+    mutate(cond = name)
+  return(summarized_df)
+}
+
+multi_summary <- summarize_and_add_cond(multi_results, "One-box / Multi-label")
+multi_single_summary <- summarize_and_add_cond(multi_to_single, "Disagg. One-box / Single-label")
+single_sampled_summary <- summarize_and_add_cond(single_sample, "Multi-box / Single-label")
+concat_sampled_summary <- summarize_and_add_cond(concat_sample, "Concat. Multi-box / Multi-label")
+
+df.comb <- rbind(single_sampled_summary,
+                 multi_summary,
+                 multi_single_summary,
+                 concat_sampled_summary)
+
+df.comb.plot = df.comb %>% 
+  group_by(cond) %>% 
+  summarise(acc_se = sd(accuracy) / sqrt(length(accuracy)),
+            zer_se = sd(zero_one_loss) / sqrt(length(zero_one_loss)),
+            ham_se = sd(hamming_loss) / sqrt(length(hamming_loss)),
+            acc_m = mean(accuracy),
+            zer_m = mean(zero_one_loss),
+            ham_m = mean(hamming_loss))
+
+df.comb.plot$cond <- fct_relevel(df.comb.plot$cond,
+                                 "One-box / Multi-label",
+                                 "Multi-box / Single-label",
+                                 "Concat. Multi-box / Multi-label",
+                                 "Disagg. One-box / Single-label")
+
+zer_plot <- ggplot(df.comb.plot) +
+  geom_bar(aes(x=cond, y=zer_m), stat="identity", fill="gray", alpha=0.7) + # Adjust alpha here
+  geom_errorbar(aes(x=cond, ymin=zer_m-1.96*zer_se, ymax=zer_m+1.96*zer_se), width=.5, alpha=1, size=.5) +
+  theme_minimal() +
+  theme(
+    panel.background = element_rect(fill = "white"),
+    axis.text = element_text(color = "black"),
+    axis.title = element_text(color = "black"),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text.y = element_text(size = 14), 
+    axis.text.x = element_text(size = 14, angle = 45, hjust = 1), # Adjust the y-axis font size
+    axis.title.x = element_text(size = 16),      # Adjust the x-axis label font size
+    legend.text = element_text(size = 14),       # Adjust the legend font size
+    axis.title.y = element_text(size = 16),      # Adjust the y-axis label font size
+    legend.title = element_text(size = 16)
+  ) +
+  labs(x = "", y = "Zero-one-loss") 
+zer_plot
+
+ham_plot <- ggplot(df.comb.plot) +
+  geom_bar(aes(x=cond, y=ham_m), stat="identity", fill="gray", alpha=0.7) + # Adjust alpha here
+  geom_errorbar(aes(x=cond, ymin=ham_m-1.96*ham_se, ymax=ham_m+1.96*ham_se), width=.5, alpha=1, size=.5) +
+  theme_minimal() +
+  theme(
+    panel.background = element_rect(fill = "white"),
+    axis.text = element_text(color = "black"),
+    axis.title = element_text(color = "black"),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text.y = element_text(size = 14), 
+    axis.text.x = element_text(size = 14, angle = 45, hjust = 1), # Adjust the y-axis font size
+    axis.title.x = element_text(size = 16),      # Adjust the x-axis label font size
+    legend.text = element_text(size = 14),       # Adjust the legend font size
+    axis.title.y = element_text(size = 16),      # Adjust the y-axis label font size
+    legend.title = element_text(size = 16)
+  ) +
+  labs(x = "", y = "Hamming-loss") 
+ham_plot
+
+
+ham_plot2 <- ggplot(df.comb.plot[df.comb.plot$cond == "One-box / Multi-label" | df.comb.plot$cond == "Concat. Multi-box / Multi-label", ]) +
+  geom_bar(aes(x = cond, y = ham_m), stat = "identity", fill = "gray", alpha = 0.7) +
+  geom_errorbar(aes(x = cond, ymin = ham_m - 1.96*ham_se, ymax = ham_m + 1.96*ham_se), width = .5, alpha = 1, size = .5) +
+  coord_cartesian(ylim = c(0.0069, 0.0075)) +  # Zoom into the range without removing data
+  theme_minimal() +
+  theme(
+    panel.background = element_rect(fill = "white"),
+    axis.text = element_text(color = "black"),
+    axis.title = element_text(color = "black"),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text.y = element_text(size = 14), 
+    axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
+    axis.title.x = element_text(size = 16),
+    axis.title.y = element_text(size = 16),
+    legend.text = element_text(size = 14),
+    legend.title = element_text(size = 16)
+  ) +
+  labs(x = "", y = "Hamming-loss")
+
+ham_plot2
+
+library(gridExtra)
+
+# Combine the plots side by side
+comb_plot <- grid.arrange(zer_plot, ham_plot, ncol = 2)
+
+ggsave("~/bwSyncShare/Multilabel open q/results/comb_plot.eps", comb_plot, device = cairo_ps, width = 10, height = 6)
+ggsave("~/bwSyncShare/Multilabel open q/results/hamm_loss.eps", ham_plot2, device = cairo_ps, width = 10, height = 6)
+
+
+
+
+
+
+
+library(tidyverse)
+multi_results <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_multi.csv")
+multi_to_single <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_multi_to_single.csv")
 single_all <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_single_all.csv")
 single_sample <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_single_sampled_3-5-10box.csv")
 single_three <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_single_threebox.csv")
@@ -10,6 +130,7 @@ concat_all <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_con
 concat_three <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_concat_threebox.csv")
 concat_five <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_concat_fivebox.csv")
 concat_ten <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_concat_tenbox.csv")
+concat_sample <- read_csv("~/bwSyncShare/Multilabel open q/results/test_results_concat_tenbox.csv")
 
 ## need to correct hamming loss for some as there was an error in the computation in the python script
 ## need to divide by number of samples in test df
