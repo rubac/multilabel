@@ -82,7 +82,7 @@ ham_plot <- ggplot(df.comb.plot) +
 ham_plot
 
 
-ham_plot2 <- ggplot(df.comb.plot[df.comb.plot$cond == "One-box / Multi-label" | df.comb.plot$cond == "Concat. Multi-box / Multi-label", ]) +
+ham_plot2 <- ggplot(df.comb.plot[df.comb.plot$cond == "Single-box / Multi-label" | df.comb.plot$cond == "Concat. Multi-box / Multi-label", ]) +
   geom_bar(aes(x = cond, y = ham_m), stat = "identity", fill = "gray", alpha = 0.7) +
   geom_errorbar(aes(x = cond, ymin = ham_m - 1.96*ham_se, ymax = ham_m + 1.96*ham_se), width = .5, alpha = 1, size = .5) +
   coord_cartesian(ylim = c(0.0069, 0.0075)) +  # Zoom into the range without removing data
