@@ -16,8 +16,8 @@ summarize_and_add_cond <- function(df, name) {
   return(summarized_df)
 }
 
-multi_summary <- summarize_and_add_cond(multi_results, "One-box / Multi-label")
-multi_single_summary <- summarize_and_add_cond(multi_to_single, "Disagg. One-box / Single-label")
+multi_summary <- summarize_and_add_cond(multi_results, "Single-box / Multi-label")
+multi_single_summary <- summarize_and_add_cond(multi_to_single, "Disagg. Single-box / Single-label")
 single_sampled_summary <- summarize_and_add_cond(single_sample, "Multi-box / Single-label")
 concat_sampled_summary <- summarize_and_add_cond(concat_sample, "Concat. Multi-box / Multi-label")
 
@@ -36,10 +36,10 @@ df.comb.plot = df.comb %>%
             ham_m = mean(hamming_loss))
 
 df.comb.plot$cond <- fct_relevel(df.comb.plot$cond,
-                                 "One-box / Multi-label",
-                                 "Multi-box / Single-label",
+                                 "Single-box / Multi-label",
                                  "Concat. Multi-box / Multi-label",
-                                 "Disagg. One-box / Single-label")
+                                 "Multi-box / Single-label",
+                                 "Disagg. Single-box / Single-label")
 
 zer_plot <- ggplot(df.comb.plot) +
   geom_bar(aes(x=cond, y=zer_m), stat="identity", fill="gray", alpha=0.7) + # Adjust alpha here
