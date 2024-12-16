@@ -109,8 +109,8 @@ library(gridExtra)
 # Combine the plots side by side
 comb_plot <- grid.arrange(zer_plot, ham_plot, ncol = 2)
 
-ggsave("~/bwSyncShare/Multilabel open q/results/comb_plot.eps", comb_plot, device = cairo_ps, width = 10, height = 6)
-ggsave("~/bwSyncShare/Multilabel open q/results/hamm_loss.eps", ham_plot2, device = cairo_ps, width = 10, height = 6)
+ggsave("~/bwSyncShare/Multilabel open q/results/comb_plot.eps", comb_plot, device = cairo_ps, width = 10, height = 6, antialias = "none")
+ggsave("~/bwSyncShare/Multilabel open q/results/hamm_loss.eps", ham_plot2, device = cairo_ps, width = 10, height = 6, antialias = "none")
 
 
 
