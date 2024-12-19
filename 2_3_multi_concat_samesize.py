@@ -41,25 +41,16 @@ def av_labels_correct(labels, preds):
 def zero_one_loss(labels, preds):
     return 1- accuracy_score(labels, np.round(preds))
 
-# def zero_one_loss(y_true, y_pred):
-#     if isinstance(y_true, pd.DataFrame):
-#         y_true = np.array(y_true['labels'].tolist())
-#     if isinstance(y_pred, pd.DataFrame):
-#         y_pred = np.array(y_pred['labels'].tolist())
-#     nsample = len(y_true)
-#     row_indicators = np.logical_not(np.all(y_true == y_pred, axis=1))
-#     not_equal_count = np.sum(row_indicators)
-#     return not_equal_count / nsample
 def hamming_loss(y_true, y_pred):
     y_true = np.array(y_true)
     y_pred = np.array(y_pred)
     hl_num = np.sum(np.logical_xor(y_true, y_pred))
     hl_den = y_true.size  # total n = #rows * #cols
     return hl_num / hl_den
+
 df = pd.read_csv(r'C:\Users\rbach\Documents\multilabel_ruben\data\all_concat.csv')
 df.head()
 
-# df = df[df['exp_cond'] == 'five box']
 df = df.drop(columns=['exp_cond'])
 
 selected_columns = df.iloc[:, 2:12]
@@ -88,6 +79,9 @@ p_lr = [1e-3, 1e-4, 1e-5]
 
 # Empty lists to store test results for all splits (best model only)
 test_perf = []
+
+### select random n=553 participants, no need to account for multiple answers per respondent because one box condition
+sampled_df = np.random.choice(df, size=553, replace=False)
 
 for split_index in range(100):
     # Create a new random split of the data
@@ -150,8 +144,6 @@ for split_index in range(100):
         'zero_one_loss': test_result["zero_one_loss"],
         'hamming_loss': test_result["hamming_loss"]
     })
-    print(f"Split {split_index}: Finished with lr={best_lr} and epochs={best_epochs}")
-    print(test_perf)
     
     # At end of each split, write test results to a CSV file
     test_results_df = pd.DataFrame(test_perf)

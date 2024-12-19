@@ -42,46 +42,7 @@ def hamming_loss(y_true, prob):
     hl_den = np.prod(y_true.shape)  # total n= #rows * #cols
     return hl_num/hl_den
 
-# count number of predictions without any label (all below threshold)
-def fraction_zero_label(y_true, prob):
-    y_pred=np.where(prob > threshold, 1, 0)
-    nsample = len(y_true)
-    my_nlabels =  np.sum(y_pred,axis=1)
-    fraction = 1- (np.count_nonzero(my_nlabels) / nsample)
-    return fraction
-
-# count number of predictions with 1 label
-
-def fraction_one_label(y_true, prob):
-    y_pred=np.where(prob > threshold, 1, 0)
-    nsample = len(y_true)
-    my_nlabels =  np.sum(y_pred,axis=1)
-    np.count_nonzero((my_nlabels==1))
-    # counts the number of non-zero labels, but the only non zero number is 1
-    fraction = np.count_nonzero((my_nlabels==1)) / nsample
-    return fraction
-
-# count number of predictions with 2 labels
-def fraction_two_label(y_true, prob):
-    y_pred=np.where(prob > threshold, 1, 0)
-    nsample = len(y_true)
-    my_nlabels =  np.sum(y_pred,axis=1)
-    np.count_nonzero((my_nlabels==2))
-    # counts the number of non-zero labels, but the only non zero number is 1
-    fraction = np.count_nonzero((my_nlabels==2)) / nsample
-    return fraction
-
-# count number of predictions with 3 labels
-def fraction_three_label(y_true, prob):
-    y_pred=np.where(prob > threshold, 1, 0)
-    nsample = len(y_true)
-    my_nlabels =  np.sum(y_pred,axis=1)
-    np.count_nonzero((my_nlabels==2))
-    # counts the number of non-zero labels, but the only non zero number is 1
-    fraction = np.count_nonzero((my_nlabels==3)) / nsample
-    return fraction
-
-    from sklearn.metrics import  accuracy_score
+from sklearn.metrics import  accuracy_score
 
 def av_labels_correct(labels, preds):
     return accuracy_score(labels, np.round(preds))
@@ -106,9 +67,6 @@ train_args=MultiLabelClassificationArgs(
     save_model_every_epoch = False,
     overwrite_output_dir= True
     )
-
-# p_epochs= [1,2] for testing
-# p_lr = [1e-3, 1e-4] for testing
 
 p_epochs= [5, 10, 15]
 
@@ -177,8 +135,6 @@ for split_index in range(100):
         'zero_one_loss': test_result["zero_one_loss"],
         'hamming_loss': test_result["hamming_loss"]
     })
-    print(f"Split {split_index}: Finished with lr={best_lr} and epochs={best_epochs}")
-    print(test_perf)
     
     # At end of each split, write test results to a CSV file
     test_results_df = pd.DataFrame(test_perf)

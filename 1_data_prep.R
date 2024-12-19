@@ -1,9 +1,9 @@
 # setup
 library(tidyverse)
 library(haven)
-
-# read data from Katharina
-df <- read_dta("~/bwSyncShare/Multilabel open q/data/Dataset_Happy.dta")
+setwd("~/bwSyncShare/Multilabel open q/")
+# read data 
+df <- read_dta("data/Dataset_Happy.dta")
 
 # make some changes to the weird formats resulting from the dta import
 df$lhappro_character <- haven::as_factor(df$lhappro_character)
@@ -1207,8 +1207,8 @@ df_concatsss <- rowSums(df_concat2[,c("nonresponse",
 
 min(df_concatsss)
 
-write_csv(df_onebox, "~/bwSyncShare/Multilabel open q/data/Happy_onebox.csv")
-write_csv(df_single, "~/bwSyncShare/Multilabel open q/data/all_single.csv")
+write_csv(df_onebox, "data/Happy_onebox.csv")
+write_csv(df_single, "data/all_single.csv")
 names(df_onebox)
 
 df_concat2 <- select(df_concat2, lfdn, text, rest, nonresponse, time_references, life_event,
@@ -1216,7 +1216,7 @@ df_concat2 <- select(df_concat2, lfdn, text, rest, nonresponse, time_references,
                     financial_situation, job, health, social_network_surrounding, exp_cond)
 names(df_concat2)
 
-write_csv(df_concat2, "~/bwSyncShare/Multilabel open q/data/all_concat.csv")
+write_csv(df_concat2, "data/all_concat.csv")
 
 head(df_onebox)
 
@@ -1245,7 +1245,7 @@ table(df_single$new_label_1)
 ### this was done manually
 ## we now need to make some adjustments to the resulting data
 
-multi_to_single <- read_csv2(file = "~/bwSyncShare/Multilabel open q/data/onebox_to_single.csv")
+multi_to_single <- read_csv2(file = "data/onebox_to_single.csv")
 multi_to_single_1 <- multi_to_single %>%
   pivot_longer(
     cols = starts_with("label_"),
@@ -1266,4 +1266,4 @@ multi_to_single_2 <- multi_to_single %>%
 multi_to_single <- merge(multi_to_single_1, multi_to_single_2, by = c("lfdn", "num"), all = TRUE)
 multi_to_single <- multi_to_single %>% 
   select(-num)
-write_csv(multi_to_single, "~/bwSyncShare/Multilabel open q/data/multi_to_single_final.csv")
+write_csv(multi_to_single, "data/multi_to_single_final.csv")

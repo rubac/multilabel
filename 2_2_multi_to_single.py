@@ -19,7 +19,7 @@ import datetime
 # add date and time to name of csv to avoid overwriting csvs
 now = datetime.datetime.now()
 timestamp = now.strftime("%Y%m%d_%H%M%S")
-filename = f"C:\\downloads\\ruben_results\\test_results_single_ten{timestamp}.csv"
+filename = f"C:\\downloads\\ruben_results\\multi_to_single{timestamp}.csv"
 
 def f1_multiclass(labels, preds):
     return f1_score(labels, preds, average='micro')
@@ -51,14 +51,9 @@ def hamming_loss_new(y_true, y_pred):
     return hl_num / hl_den
 
 # Commented out IPython magic to ensure Python compatibility.
-df = pd.read_csv(r'C:\Users\rbach\Documents\multilabel_ruben\data\all_single.csv')
+df = pd.read_csv(r'C:\downloads\ruben_results\multilabel_ruben\data\multi_to_single_final.csv')
 
-### select appropriate observations here
-df = df[df['exp_cond'] == 'ten box']
-print(df.shape)
-df = df[['text', 'new_label_1', "lfdn"]]
-df['label'] = pd.factorize(df['new_label_1'])[0]
-df = df.drop(columns=['new_label_1'])
+df['label'] = pd.factorize(df['label'])[0]
 df = df[['text', 'label', "lfdn"]]
 df.head(5)
 
@@ -92,27 +87,21 @@ train_args = ClassificationArgs(
     use_multiprocessing=True,
     labels_list=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 )
-# p_epochs= [1, 2] # for testing
-# p_lr = [1e-3, 1e-4] # for testing
 
 p_epochs= [5, 10, 15]
 p_lr = [1e-3, 1e-4, 1e-5]
 # Empty lists to store test results for all splits (best model only)
 test_perf = []
 
-# now the BERT loop ### for all single label cases, we need to sample persons and not observations
+# now the BERT loop ### for all single label cases, we need to split based on persons and not observations
 for split_index in range(100):
-    unique_persons = df['lfdn'].unique()
+    unique_persons = df['lfdn'].unique() 
     train_ids, temp_ids = train_test_split(unique_persons, test_size=0.4, random_state=split_index)
     val_ids, test_ids = train_test_split(temp_ids, test_size=0.5, random_state=split_index)
     train_df = df[df['lfdn'].isin(train_ids)]
     test_df = df[df['lfdn'].isin(test_ids)]
     val_df = df[df['lfdn'].isin(val_ids)]
 
-    # train_df, temp_df = train_test_split(df, test_size=0.4, random_state=split_index)
-    # val_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=split_index)
-
-    
     validation_results = []
     val_df.head()
     # Initialize variables to store optimal hyperparameters
@@ -160,7 +149,7 @@ for split_index in range(100):
 
     # Evaluate the model on the test set
     test_result, test_model_outputs, test_wrong_predictions  = model.eval_model(test_df, f1=f1_multiclass, acc=accuracy_score)
-    # Append validation and test results for this split
+    # Append validation and test results for this split; then, manipulate data to be able to compute multi-label metrics
     test_df_list = test_df['text'].astype(str).values.tolist()
     predictions, raw_outputs = model.predict(test_df_list)
     test_df["predicted_label"] = predictions
