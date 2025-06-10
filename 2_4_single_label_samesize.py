@@ -19,10 +19,10 @@ import datetime
 # add date and time to name of csv to avoid overwriting csvs
 now = datetime.datetime.now()
 timestamp = now.strftime("%Y%m%d_%H%M%S")
-filename = f"C:\\downloads\\ruben_results\\test_results_single_samesize_{timestamp}.csv"
-
+filename = f"C:\\downloads\\ruben_results\\single{timestamp}.csv"
 def f1_multiclass(labels, preds):
-    return f1_score(labels, preds, average='micro')
+    return f1_score(labels, preds, average='macro')
+
 def convert_to_int(lst):
     return [int(x) for x in lst]
 def replace_with_1(x):
@@ -50,9 +50,9 @@ def hamming_loss_new(y_true, y_pred):
     hl_den = y_true.size  # total n = #rows * #cols
     return hl_num / hl_den
 
-df = pd.read_csv(r'C:\Users\rbach\Documents\multilabel_ruben\data\all_single.csv')
+# Commented out IPython magic to ensure Python compatibility.
+df = pd.read_csv(r'C:\downloads\ruben_results\multilabel_ruben\data\all_single.csv')
 
-### select appropriate observations here
 df = df[['text', 'new_label_1', "lfdn"]]
 df['label'] = pd.factorize(df['new_label_1'])[0]
 df = df.drop(columns=['new_label_1'])
@@ -89,22 +89,19 @@ train_args = ClassificationArgs(
     labels_list=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 )
 
-
 p_epochs= [5, 10, 15]
 p_lr = [1e-3, 1e-4, 1e-5]
 # Empty lists to store test results for all splits (best model only)
 test_perf = []
 
-
-# select 553 people from single label dataset and then all of their labels
 unique_ids = df['lfdn'].unique()
 np.random.seed(26)
 sampled_ids = np.random.choice(unique_ids, size=553, replace=False)
 sampled_df = df[df['lfdn'].isin(sampled_ids)]
 
-# now the BERT loop
-for split_index in range(100):
-    unique_persons = sampled_df['lfdn'].unique()
+# now the BERT loop ### for all single label cases, we need to split based on persons and not observations
+for split_index in range(42, 100):
+    unique_persons = sampled_df['lfdn'].unique() 
     train_ids, temp_ids = train_test_split(unique_persons, test_size=0.4, random_state=split_index)
     val_ids, test_ids = train_test_split(temp_ids, test_size=0.5, random_state=split_index)
     train_df = sampled_df[sampled_df['lfdn'].isin(train_ids)]
@@ -202,7 +199,8 @@ for split_index in range(100):
         'epochs': best_epochs,
         'accuracy': acc_zero_one_loss(wide_true_list, wide_pred_list),
         'zero_one_loss': zero_one_loss(wide_true_list, wide_pred_list),
-        'hamming_loss': hamming_loss_new(wide_true_list, wide_pred_list)
+        'hamming_loss': hamming_loss_new(wide_true_list, wide_pred_list),
+        'f1_macro': f1_multiclass(wide_true_list, wide_pred_list)
     })
     # At end of each split, write test results to a CSV file
     test_results_df = pd.DataFrame(test_perf)
