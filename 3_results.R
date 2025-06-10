@@ -1,14 +1,21 @@
 library(tidyverse)
 setwd("~/bwSyncShare/Multilabel open q/results")
-multi_results <- read_csv("test_results_multi.csv")
-multi_to_single <- read_csv("test_results_multi_to_single.csv")
-single_sample <- read_csv("test_results_single_sampled_3-5-10box.csv")
-concat_sample <- read_csv("test_results_concat_sample.csv")
+# multi_results <- read_csv("test_results_multi.csv")
+# multi_to_single <- read_csv("test_results_multi_to_single.csv")
+# single_sample <- read_csv("test_results_single_sampled_3-5-10box.csv")
+# concat_sample <- read_csv("test_results_concat_sample.csv")
+# 
+# ## need to correct hamming loss for some as there was an error in the computation in the python script
+# ## need to divide by number of samples in test df
+# concat_sample$hamming_loss <- concat_sample$hamming_loss / round(553*0.2) # 0.2 is size of test df
+# multi_results$hamming_loss <- multi_results$hamming_loss/round(553*0.2)
 
-## need to correct hamming loss for some as there was an error in the computation in the python script
-## need to divide by number of samples in test df
-concat_sample$hamming_loss <- concat_sample$hamming_loss / round(553*0.2) # 0.2 is size of test df
-multi_results$hamming_loss <- multi_results$hamming_loss/round(553*0.2)
+multi_results <- read_csv("Revision results/Multi_rev.csv")
+multi_to_single <- read_csv("Revision results/Multi_to_single_rev.csv")
+single_sample <- read_csv("Revision results/Single_rev.csv")
+concat_sample <- read_csv("Revision results/Single_to_multi_rev.csv")
+
+
 
 # Define a function that takes a dataset and its name, and performs the summarise and mutate operations
 summarize_and_add_cond <- function(df, name) {
@@ -22,6 +29,12 @@ multi_single_summary <- summarize_and_add_cond(multi_to_single, "Disagg. Single-
 single_sampled_summary <- summarize_and_add_cond(single_sample, "Multi-box / Single-label")
 concat_sampled_summary <- summarize_and_add_cond(concat_sample, "Concat. Multi-box / Multi-label")
 
+concat_sampled_summary <- concat_sampled_summary %>%
+  rename(f1_macro = macro_f1,
+         accuracy = accuracy_av)
+multi_summary <- multi_summary %>% 
+  rename(f1_macro = macro_f1)
+
 df.comb <- rbind(single_sampled_summary,
                  multi_summary,
                  multi_single_summary,
@@ -32,9 +45,11 @@ df.comb.plot = df.comb %>%
   summarise(acc_se = sd(accuracy) / sqrt(length(accuracy)),
             zer_se = sd(zero_one_loss) / sqrt(length(zero_one_loss)),
             ham_se = sd(hamming_loss) / sqrt(length(hamming_loss)),
+            f1_se = sd(f1_macro) / sqrt(length(f1_macro)),
             acc_m = mean(accuracy),
             zer_m = mean(zero_one_loss),
-            ham_m = mean(hamming_loss))
+            ham_m = mean(hamming_loss),
+            f1_m = mean(f1_macro))
 
 df.comb.plot$cond <- fct_relevel(df.comb.plot$cond,
                                  "Single-box / Multi-label",
