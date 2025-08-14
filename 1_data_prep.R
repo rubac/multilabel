@@ -1,7 +1,7 @@
 # setup
 library(tidyverse)
 library(haven)
-setwd("~/bwSyncShare/Multilabel open q/")
+setwd("~/bwSyncShare/Multilabel_open_q/")
 # read data 
 df <- read_dta("data/Dataset_Happy.dta")
 
