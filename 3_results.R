@@ -231,7 +231,7 @@ comb_plot <- grid.arrange(zer_plot, ham_plot, ncol = 2)
 # ---- HIGH-RES EXPORTS FOR PRODUCTION ----
 # LINE DRAWINGS: 1200 dpi TIFF (preferred by journals)
 ggsave("Figure_1.tif", plot = comb_plot,
-       device = ragg::agg_tiff, dpi = 1200,
+       device = ragg::agg_tiff, dpi = 300,
        width = 10, height = 6, units = "in", compression = "lzw")
 
 ggsave("Figure_S1.tif", plot = ham_plot2,
@@ -245,6 +245,10 @@ ggsave("Figure_1.jpg", plot = comb_plot,
        width = 10, height = 6, units = "in")
 
 ggsave("Figure_S1.jpg", plot = ham_plot2,
+       device = ragg::agg_jpeg, dpi = 300,
+       width = 10, height = 6, units = "in")
+
+ggsave("Figure_S1.png", plot = ham_plot2,
        device = ragg::agg_jpeg, dpi = 300,
        width = 10, height = 6, units = "in")
 
